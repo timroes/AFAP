@@ -16,9 +16,8 @@ func _input(event):
 			
 func _notification(what):
 	# Pause game, when window loses focus
-	if what == MainLoop.NOTIFICATION_WM_FOCUS_OUT:
+	if pause_on_unfocus and what == MainLoop.NOTIFICATION_WM_FOCUS_OUT:
 		pause()
-	pass
 
 func pause():
 	get_tree().set_pause(true)
