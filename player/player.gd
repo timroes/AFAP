@@ -13,12 +13,6 @@ const MAX_FALLING_VELOCITY = 12000
 # The maximum velocity a player can have while sliding down a wall
 const MAX_WALL_SLIDE_VELOCITY = 100
 
-# When the user jumps with an upwards move to a wall, this constant determines the
-# maximum velocity of this upward speed he has afterwards. This prevents sliding
-# walls upwards. Setting this to 0 will cause the plaeyr to instantly stop any upward movement
-# jumping into a wall.
-const MAX_WALL_UPWARDS_VELOCITY = 80
-
 const MAX_VELOCITY_X = 500
 const MIN_VELOCITY_X = -500
 
@@ -126,7 +120,7 @@ func _fixed_process(delta):
 	# Limit horizontal movement speed
 	velocity.x = clamp(velocity.x, MIN_VELOCITY_X, MAX_VELOCITY_X)
 	
-	if state == STATE_WALL_SLIDING and \
+	if state == STATE_WALL_SLIDING and velocity.y > 0 and \
 			(wall_slide_side == -1 and right_pressed or \
 			wall_slide_side == 1 and left_pressed):
 		# If the user is currently wall sliding and presses towards the wall, fall slower (aka wall slide)
@@ -152,7 +146,6 @@ func _fixed_process(delta):
 			self.state = STATE_ON_GROUND
 		else:
 			self.state = STATE_WALL_SLIDING
-			velocity.y = max(velocity.y, -MAX_WALL_UPWARDS_VELOCITY)
 			wall_slide_side = sign(norm.x)
 			
 	jump_pressed = false
