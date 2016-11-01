@@ -2,6 +2,8 @@ extends Node
 
 const SCROLL_SPEED = 150.0
 
+export(bool) var disable_scroll = false
+
 onready var camera = get_node("camera")
 
 var camera_pos = Vector2()
@@ -13,8 +15,9 @@ func _ready():
 	set_process_input(true)
 
 func _fixed_process(delta):
-	camera_pos.x += delta * SCROLL_SPEED
-	camera.set_pos(camera_pos)
+	if not disable_scroll:
+		camera_pos.x += delta * SCROLL_SPEED
+		camera.set_pos(camera_pos)
 
 func _input(event):
 	if event.type == InputEvent.KEY and event.is_pressed() and event.scancode == KEY_R:
