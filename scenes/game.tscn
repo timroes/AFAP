@@ -1,13 +1,14 @@
-[gd_scene load_steps=13 format=1]
+[gd_scene load_steps=14 format=1]
 
 [ext_resource path="res://scenes/game.gd" type="Script" id=1]
 [ext_resource path="res://world/world_generator.tscn" type="PackedScene" id=2]
-[ext_resource path="res://player/player.tscn" type="PackedScene" id=3]
-[ext_resource path="res://world/objects/box.tscn" type="PackedScene" id=4]
-[ext_resource path="res://world/mf_bg-1080p.tex" type="Texture" id=5]
-[ext_resource path="res://pause.gd" type="Script" id=6]
-[ext_resource path="res://pause/pause.tex" type="Texture" id=7]
-[ext_resource path="res://shaders/white.tex" type="Texture" id=8]
+[ext_resource path="res://world/objects/box.tscn" type="PackedScene" id=3]
+[ext_resource path="res://world/mf_bg-1080p.tex" type="Texture" id=4]
+[ext_resource path="res://ending.gd" type="Script" id=5]
+[ext_resource path="res://fonts/minecrafter.fnt" type="BitmapFont" id=6]
+[ext_resource path="res://pause.gd" type="Script" id=7]
+[ext_resource path="res://pause/pause.tex" type="Texture" id=8]
+[ext_resource path="res://shaders/white.tex" type="Texture" id=9]
 
 [sub_resource type="CanvasItemShader" id=1]
 
@@ -33,7 +34,7 @@ shader_param/depth = 0.003
 [node name="game" type="Node"]
 
 script/script = ExtResource( 1 )
-disable_scroll = true
+disable_scroll = false
 
 [node name="world" type="Node2D" parent="."]
 
@@ -43,75 +44,71 @@ material/material = SubResource( 2 )
 
 transform/pos = Vector2( 0, 1088 )
 
-[node name="player" parent="world" instance=ExtResource( 3 )]
-
-transform/pos = Vector2( 736, 800 )
-
 [node name="demo_world" type="Node2D" parent="world"]
 
 editor/display_folded = true
 
-[node name="box" parent="world/demo_world" instance=ExtResource( 4 )]
+[node name="box" parent="world/demo_world" instance=ExtResource( 3 )]
 
 transform/pos = Vector2( 512, 1024 )
 
-[node name="box1" parent="world/demo_world" instance=ExtResource( 4 )]
+[node name="box1" parent="world/demo_world" instance=ExtResource( 3 )]
 
 transform/pos = Vector2( 512, 896 )
 
-[node name="box2" parent="world/demo_world" instance=ExtResource( 4 )]
+[node name="box2" parent="world/demo_world" instance=ExtResource( 3 )]
 
 transform/pos = Vector2( 640, 1024 )
 
-[node name="box3" parent="world/demo_world" instance=ExtResource( 4 )]
+[node name="box3" parent="world/demo_world" instance=ExtResource( 3 )]
 
 transform/pos = Vector2( 512, 768 )
 
-[node name="box4" parent="world/demo_world" instance=ExtResource( 4 )]
+[node name="box4" parent="world/demo_world" instance=ExtResource( 3 )]
 
 transform/pos = Vector2( 512, 640 )
 
-[node name="box5" parent="world/demo_world" instance=ExtResource( 4 )]
+[node name="box5" parent="world/demo_world" instance=ExtResource( 3 )]
 
 transform/pos = Vector2( 1248, 1024 )
 
-[node name="box6" parent="world/demo_world" instance=ExtResource( 4 )]
+[node name="box6" parent="world/demo_world" instance=ExtResource( 3 )]
 
 transform/pos = Vector2( 1376, 896 )
 
-[node name="box7" parent="world/demo_world" instance=ExtResource( 4 )]
+[node name="box7" parent="world/demo_world" instance=ExtResource( 3 )]
 
 transform/pos = Vector2( 1216, 640 )
 
-[node name="box8" parent="world/demo_world" instance=ExtResource( 4 )]
+[node name="box8" parent="world/demo_world" instance=ExtResource( 3 )]
 
 transform/pos = Vector2( 1504, 768 )
 
-[node name="box13" parent="world/demo_world" instance=ExtResource( 4 )]
+[node name="box13" parent="world/demo_world" instance=ExtResource( 3 )]
 
 transform/pos = Vector2( 1632, 960 )
 
-[node name="box14" parent="world/demo_world" instance=ExtResource( 4 )]
+[node name="box14" parent="world/demo_world" instance=ExtResource( 3 )]
 
 transform/pos = Vector2( 1664, 1024 )
 
-[node name="box15" parent="world/demo_world" instance=ExtResource( 4 )]
+[node name="box15" parent="world/demo_world" instance=ExtResource( 3 )]
 
 transform/pos = Vector2( 1856, 800 )
 
-[node name="box9" parent="world/demo_world" instance=ExtResource( 4 )]
+[node name="box9" parent="world/demo_world" instance=ExtResource( 3 )]
 
 transform/pos = Vector2( 384, 768 )
 
-[node name="box10" parent="world/demo_world" instance=ExtResource( 4 )]
+[node name="box10" parent="world/demo_world" instance=ExtResource( 3 )]
 
 transform/pos = Vector2( 384, 896 )
 
-[node name="box11" parent="world/demo_world" instance=ExtResource( 4 )]
+[node name="box11" parent="world/demo_world" instance=ExtResource( 3 )]
 
 transform/pos = Vector2( 256, 1024 )
 
-[node name="box12" parent="world/demo_world" instance=ExtResource( 4 )]
+[node name="box12" parent="world/demo_world" instance=ExtResource( 3 )]
 
 transform/pos = Vector2( 1024, 544 )
 
@@ -136,6 +133,7 @@ drag_margin/bottom = 0.2
 
 [node name="ParallaxBackground" type="ParallaxBackground" parent="."]
 
+editor/display_folded = true
 layer = -1
 offset = Vector2( 960, 0 )
 rotation = 0.0
@@ -156,7 +154,48 @@ motion/mirroring = Vector2( 1920, 0 )
 
 [node name="Sprite" type="Sprite" parent="ParallaxBackground/ParallaxLayer"]
 
-texture = ExtResource( 5 )
+texture = ExtResource( 4 )
+
+[node name="end" type="CanvasLayer" parent="."]
+
+process/pause_mode = 2
+layer = 1
+offset = Vector2( 0, 0 )
+rotation = 0.0
+scale = Vector2( 1, 1 )
+script/script = ExtResource( 5 )
+
+[node name="end_overlay" type="Control" parent="end"]
+
+visibility/visible = false
+anchor/right = 1
+anchor/bottom = 1
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 0.0
+margin/top = 0.0
+margin/right = 0.0
+margin/bottom = 0.0
+
+[node name="Label" type="Label" parent="end/end_overlay"]
+
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 800.0
+margin/top = 512.0
+margin/right = 1123.0
+margin/bottom = 596.0
+custom_fonts/font = ExtResource( 6 )
+custom_colors/font_color = Color( 0.336864, 0.145767, 0.910156, 1 )
+text = "THE END\n\nPress Start to play again"
+align = 1
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
 
 [node name="pause" type="CanvasLayer" parent="."]
 
@@ -165,7 +204,7 @@ layer = 1
 offset = Vector2( 0, 0 )
 rotation = 0.0
 scale = Vector2( 1, 1 )
-script/script = ExtResource( 6 )
+script/script = ExtResource( 7 )
 pause_on_unfocus = false
 
 [node name="pause_overlay" type="Control" parent="pause"]
@@ -197,7 +236,7 @@ margin/left = 128.0
 margin/top = 128.0
 margin/right = 0.0
 margin/bottom = 0.0
-texture = ExtResource( 7 )
+texture = ExtResource( 8 )
 stretch_mode = 0
 
 [node name="pauseeffect" type="TextureFrame" parent="pause/pause_overlay"]
@@ -213,7 +252,7 @@ margin/left = 0.0
 margin/top = 0.0
 margin/right = 0.0
 margin/bottom = 0.0
-texture = ExtResource( 8 )
+texture = ExtResource( 9 )
 expand = true
 stretch_mode = 0
 

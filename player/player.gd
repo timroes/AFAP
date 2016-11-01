@@ -1,11 +1,13 @@
 extends KinematicBody2D
 
+signal died(player_number)
+
 const GRAVITY = 1450.0
 
 # The gravity with which a player slides down a wall
 const WALL_SLIDE_GRAVITY = GRAVITY / 10
 
-const JUMPING_START_VELOCITY = 650.0
+const JUMPING_START_VELOCITY = 750.0
 const JUMPING_ACCELERATION = 400.0
 
 # The maximum velocity a player can have while being in free fall
@@ -20,7 +22,7 @@ const MIN_VELOCITY_X = -500
 const X_ACCELERATION = 2500
 # The x-axis acceleration a player has in the air (usually slower, so
 # that changing directions midair is slower, than on ground)
-const X_ACCELERATION_AIR = X_ACCELERATION / 3
+const X_ACCELERATION_AIR = X_ACCELERATION / 2.5
 
 # The x-axis deceleration a player has on the ground, to prevent instant stopping
 # if the player doesn't press right or left anymore
@@ -80,6 +82,12 @@ func _input(event):
 	if event.is_action_pressed(action_jump):
 		jump_pressed = true
 
+func die():
+	# Disable input of this character, since it's dead now
+	set_fixed_process(false)
+	# TODO: die animation
+	emit_signal("died", player_number)
+	hide()
 	
 func _fixed_process(delta):
 	var left_pressed = Input.is_action_pressed(action_left)
@@ -135,6 +143,10 @@ func _fixed_process(delta):
 	motion = move(motion)
 	
 	if is_colliding():
+	
+		if get_collider().is_in_group("killing"):
+			die()
+	
 		var norm = get_collision_normal()
 		var angle = abs(norm.angle() - PI)
 		

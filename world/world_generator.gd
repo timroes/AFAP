@@ -6,6 +6,7 @@ const FLOOR_POSITION = GROUND_TILE_WIDTH / 2
 const TILE = preload("res://world/ground/ground_tile.tscn")
 const TREE = preload("res://world/plants/tree.tscn")
 const BOX = preload("res://world/objects/box.tscn")
+const SPIKES = preload("res://world/objects/spikes.tscn")
 
 onready var camera = utils.get_camera()
 
@@ -21,6 +22,8 @@ func _process(delta):
 		plant_tree()
 	elif rand_range(0, 80) <= 1:
 		boxes()
+	elif rand_range(0, 80) <= 1:
+		spikes()
 
 	if world_end.x <= camera.get_global_pos().x + camera.get_viewport_rect().size.width + GROUND_TILE_WIDTH:
 		generate_next_tile()
@@ -40,4 +43,8 @@ func boxes():
 	var box = BOX.instance()
 	box.set_pos(Vector2(world_end.x, -FLOOR_POSITION))
 	add_child(box)
-	pass
+	
+func spikes():
+	var spikes = SPIKES.instance()
+	spikes.set_pos(Vector2(world_end.x, -FLOOR_POSITION))
+	add_child(spikes)
