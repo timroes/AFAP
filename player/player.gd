@@ -22,18 +22,18 @@ const MIN_VELOCITY_X = -500
 const X_ACCELERATION = 2500
 # The x-axis acceleration a player has in the air (usually slower, so
 # that changing directions midair is slower, than on ground)
-const X_ACCELERATION_AIR = X_ACCELERATION / 2.5
+const X_ACCELERATION_AIR = X_ACCELERATION / 2
 
 # The x-axis deceleration a player has on the ground, to prevent instant stopping
 # if the player doesn't press right or left anymore
-const X_DECELERATION_GROUND = 2000
+const X_DECELERATION_GROUND = 100000
 # The x-axis deceleration a player has while being in air. This is usually less
 # than on ground, because there is no "friction" in the air that a player would
 # stop so suddenly.
 const X_DECELERATION_AIR = 100
 
 # The initial vector 
-const WALLJUMP_START_VECTOR = Vector2(300, -600)
+const WALLJUMP_START_VECTOR = Vector2(200, -700)
 # The amount of seconds after a walljump that horizontal movement control should be froozen
 const WALLJUMP_X_FREEZE_TIME = 0.15
 
