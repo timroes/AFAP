@@ -50,6 +50,9 @@ const STATE_NAME_MAP = {
 
 export(int) var player_number = 1 setget set_player_number
 
+onready var camera = utils.get_camera()
+onready var point_of_death = get_node("point_of_death")
+
 var velocity = Vector2()
 
 var state = STATE_IN_AIR setget set_state
@@ -66,6 +69,7 @@ var jump_pressed
 func _ready():
 	set_fixed_process(true)
 	set_process_input(true)
+	set_process(true)
 
 func set_player_number(newval):
 	player_number = newval
@@ -88,7 +92,11 @@ func die():
 	# TODO: die animation
 	emit_signal("died", player_number)
 	hide()
-	
+
+func _process(delta):
+	if point_of_death.get_global_pos().x < camera.get_global_pos().x:
+		die()
+
 func _fixed_process(delta):
 	var left_pressed = Input.is_action_pressed(action_left)
 	var right_pressed = Input.is_action_pressed(action_right)
