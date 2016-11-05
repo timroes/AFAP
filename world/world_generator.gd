@@ -1,50 +1,42 @@
 extends Node2D
 
-const repeat = 5
-const GROUND_TILE_WIDTH = 128
-const FLOOR_POSITION = GROUND_TILE_WIDTH / 2
-const TILE = preload("res://world/ground/ground_tile.tscn")
-const TREE = preload("res://world/plants/tree.tscn")
-const BOX = preload("res://world/objects/box.tscn")
-const SPIKES = preload("res://world/objects/spikes.tscn")
+# The pixel value of how far before the end of the world would scroll into view
+# a new snippet is loaded.
+const PRELOAD_HORIZON = 500
+
+var snippets = []
+var snippet_count
+
+var last_snippet_width
 
 onready var camera = utils.get_camera()
 
 var world_end = Vector2()
 
+func _init():
+	for scene in utils.get_scenes_in_directory("res://world/snippets"):
+		var snippet = load(scene)
+		snippets.append(snippet)
+	snippet_count = snippets.size()
+
 func _ready():
 	set_process(true)
-	# TODO: Fill first screen
 
 func _process(delta):
+	if world_end.x <= camera.get_global_pos().x + camera.get_viewport_rect().size.width + PRELOAD_HORIZON:
+		next_snippet()
 	
-	if rand_range(0, 100) <= 1:
-		plant_tree()
-	elif rand_range(0, 80) <= 1:
-		boxes()
-	elif rand_range(0, 80) <= 1:
-		spikes()
+	for i in range(get_child_count()):
+		var child = get_child(i)
+		if child.get_global_pos().x + child.snippet_width <  camera.get_global_pos().x:
+			child.queue_free()
 
-	if world_end.x <= camera.get_global_pos().x + camera.get_viewport_rect().size.width + GROUND_TILE_WIDTH:
-		generate_next_tile()
-
-func generate_next_tile():
-	var new_tile = TILE.instance()
-	new_tile.set_pos(Vector2(world_end.x, 0))
-	add_child(new_tile)
-	world_end.x += GROUND_TILE_WIDTH
+func next_snippet():
+	randomize()
+	var next_snippet_index = randi() % snippet_count
+	var next_snippet = snippets[next_snippet_index]
+	var snippet = next_snippet.instance()
+	snippet.set_pos(Vector2(world_end.x, 0))
+	world_end.x += snippet.snippet_width
+	add_child(snippet)
 	
-func plant_tree():
-	var tree = TREE.instance()
-	tree.set_pos(Vector2(world_end.x, -FLOOR_POSITION))
-	add_child(tree)
-	
-func boxes():
-	var box = BOX.instance()
-	box.set_pos(Vector2(world_end.x, -FLOOR_POSITION))
-	add_child(box)
-	
-func spikes():
-	var spikes = SPIKES.instance()
-	spikes.set_pos(Vector2(world_end.x, -FLOOR_POSITION))
-	add_child(spikes)

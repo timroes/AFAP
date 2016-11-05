@@ -42,7 +42,7 @@ material/material = SubResource( 2 )
 
 [node name="world_generator" parent="world" instance=ExtResource( 2 )]
 
-transform/pos = Vector2( 0, 1088 )
+transform/pos = Vector2( 0, 0 )
 
 [node name="demo_world" type="Node2D" parent="world"]
 

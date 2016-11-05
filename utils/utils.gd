@@ -1,11 +1,19 @@
 extends Node
 
-func _ready():
-	# Called every time the node is added to the scene.
-	# Initialization here
-	pass
-	
 func get_camera():
 	return get_node("/root/game/camera")
 
-
+func get_scenes_in_directory(path):
+	var files = []
+	var dir = Directory.new()
+	dir.open(path)
+	dir.list_dir_begin()
+	
+	var file = dir.get_next()
+	while file != "":
+		if file.extension() == "tscn":
+			files.append("%s/%s" % [path, file])
+		file = dir.get_next()
+		
+	dir.list_dir_end()
+	return files

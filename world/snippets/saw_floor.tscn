@@ -1,0 +1,38 @@
+[gd_scene load_steps=4 format=1]
+
+[ext_resource path="res://world/snippets/snippet.gd" type="Script" id=1]
+[ext_resource path="res://world/snippets/shared/border.tscn" type="PackedScene" id=2]
+[ext_resource path="res://world/objects/saw.tscn" type="PackedScene" id=3]
+
+[node name="saw_floor" type="Node2D"]
+
+script/script = ExtResource( 1 )
+snippet_width = 1920
+
+[node name="border" parent="." instance=ExtResource( 2 )]
+
+[node name="saw" parent="." instance=ExtResource( 3 )]
+
+transform/pos = Vector2( 352, 960 )
+
+[node name="saw1" parent="." instance=ExtResource( 3 )]
+
+transform/pos = Vector2( 960, 960 )
+
+[node name="saw3" parent="." instance=ExtResource( 3 )]
+
+transform/pos = Vector2( 672, 128 )
+
+[node name="saw4" parent="." instance=ExtResource( 3 )]
+
+transform/pos = Vector2( 1344, 128 )
+
+[node name="saw2" parent="." instance=ExtResource( 3 )]
+
+transform/pos = Vector2( 1600, 960 )
+
+[node name="end_of_snippet" type="Position2D" parent="."]
+
+transform/pos = Vector2( 2026, 1098 )
+
+

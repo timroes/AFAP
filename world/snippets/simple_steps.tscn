@@ -1,0 +1,47 @@
+[gd_scene load_steps=5 format=1]
+
+[ext_resource path="res://world/snippets/snippet.gd" type="Script" id=1]
+[ext_resource path="res://world/snippets/shared/border.tscn" type="PackedScene" id=2]
+[ext_resource path="res://world/objects/box.tscn" type="PackedScene" id=3]
+[ext_resource path="res://world/objects/saw.tscn" type="PackedScene" id=4]
+
+[node name="simple_steps" type="Node2D"]
+
+script/script = ExtResource( 1 )
+snippet_width = 1920
+
+[node name="border" parent="." instance=ExtResource( 2 )]
+
+[node name="box" parent="." instance=ExtResource( 3 )]
+
+transform/pos = Vector2( 352, 1024 )
+
+[node name="box1" parent="." instance=ExtResource( 3 )]
+
+transform/pos = Vector2( 480, 1024 )
+
+[node name="box2" parent="." instance=ExtResource( 3 )]
+
+transform/pos = Vector2( 608, 1024 )
+
+[node name="box3" parent="." instance=ExtResource( 3 )]
+
+transform/pos = Vector2( 480, 896 )
+
+[node name="box4" parent="." instance=ExtResource( 3 )]
+
+transform/pos = Vector2( 1152, 1024 )
+
+[node name="box5" parent="." instance=ExtResource( 3 )]
+
+transform/pos = Vector2( 1280, 1024 )
+
+[node name="box6" parent="." instance=ExtResource( 3 )]
+
+transform/pos = Vector2( 1536, 1024 )
+
+[node name="saw" parent="." instance=ExtResource( 4 )]
+
+transform/pos = Vector2( 1472, 960 )
+
+
