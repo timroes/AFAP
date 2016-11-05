@@ -15,6 +15,7 @@ const PLAYER_COLORS = [
 ]
 
 var color_index = {}
+var joined_game = {}
 
 func _ready():
 	set_process_input(true)
@@ -32,13 +33,14 @@ func get_player_color(player_number):
 func join_game(player_number):
 	players.add_player(player_number, get_player_color(player_number))
 	get_node("players/player%d" % player_number).set_opacity(0.4)
+	joined_game[player_number] = true
 
 func change_color(player_number, direction):
 	color_index[player_number] = (color_index[player_number] + direction) % PLAYER_COLORS.size()
 	refresh_player_label(player_number)
 	
 func has_joined_game(player_number):
-	return players.get_players().has(player_number)
+	return joined_game.has(player_number)
 	
 func _input(event):
 	for player_number in range(MAX_PLAYERS):
