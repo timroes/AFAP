@@ -19,6 +19,8 @@ func _ready():
 	set_fixed_process(true)
 	# Create players
 	setup_players()
+	# End any possible pause when game starts
+	get_tree().set_pause(false)
 
 
 func setup_players():
