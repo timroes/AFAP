@@ -49,9 +49,11 @@ const STATE_NAME_MAP = {
 }
 
 export(int) var player_number = 1 setget set_player_number
+export(Color) var player_color = Color(1, 1, 1) setget set_player_color
 
 onready var camera = utils.get_camera()
 onready var point_of_death = get_node("point_of_death")
+onready var sprite = get_node("sprite")
 
 var velocity = Vector2()
 
@@ -70,12 +72,18 @@ func _ready():
 	set_fixed_process(true)
 	set_process_input(true)
 	set_process(true)
+	sprite.set_modulate(player_color)
 
 func set_player_number(newval):
 	player_number = newval
 	action_jump = "player%d_jump" % player_number
 	action_left = "player%d_left" % player_number
 	action_right = "player%d_right" % player_number
+	
+func set_player_color(newval):
+	player_color = newval
+	if sprite:
+		sprite.set_modulate(newval)
 
 func set_state(newval):
 	if newval != state:

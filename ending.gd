@@ -12,5 +12,7 @@ func show():
 	overlay.show()
 	
 func _input(event):
+	# TODO: Why doesn't this work for return button?
 	if event.is_action_pressed("start_game"):
 		get_tree().reload_current_scene()
+		get_tree().set_input_as_handled()

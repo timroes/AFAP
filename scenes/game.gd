@@ -17,7 +17,6 @@ func _ready():
 	# Called every time the node is added to the scene.
 	# Initialization here
 	set_fixed_process(true)
-	set_process_input(true)
 	# Create players
 	setup_players()
 
@@ -26,10 +25,11 @@ func setup_players():
 	var ps = players.get_players()
 	players_count = ps.size()
 	players_alive = players_count
-	for player_number in players.get_players():
+	for joined_player in ps:
 		var p = player.instance()
-		p.player_number = player_number
-		p.set_pos(Vector2(500 + 100*player_number, 200))
+		p.player_number = joined_player.number
+		p.player_color = joined_player.color
+		p.set_pos(Vector2(500 + 100*joined_player.number, 200))
 		p.connect("died", self, "player_died")
 		add_child(p)
 
@@ -48,6 +48,3 @@ func _fixed_process(delta):
 		camera_pos.x += delta * SCROLL_SPEED
 		camera.set_pos(camera_pos)
 
-func _input(event):
-	if event.type == InputEvent.KEY and event.is_pressed() and event.scancode == KEY_R:
-		get_tree().reload_current_scene()

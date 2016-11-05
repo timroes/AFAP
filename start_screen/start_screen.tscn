@@ -70,33 +70,28 @@ margin/bottom = 392.0
 
 [node name="player0" parent="players" instance=ExtResource( 3 )]
 
-visibility/opacity = 0.4
 name = "Player 1"
 
 [node name="player1" parent="players" instance=ExtResource( 3 )]
 
-visibility/opacity = 0.4
 margin/left = 192.0
 margin/right = 232.0
 name = "Player 2"
 
 [node name="player2" parent="players" instance=ExtResource( 3 )]
 
-visibility/opacity = 0.4
 margin/left = 384.0
 margin/right = 424.0
 name = "Player 3"
 
 [node name="player3" parent="players" instance=ExtResource( 3 )]
 
-visibility/opacity = 0.4
 margin/left = 576.0
 margin/right = 616.0
 name = "Player 4"
 
 [node name="player4" parent="players" instance=ExtResource( 3 )]
 
-visibility/opacity = 0.4
 margin/left = 768.0
 margin/right = 808.0
 name = "Player 5"
