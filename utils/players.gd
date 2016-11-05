@@ -1,6 +1,6 @@
 extends Node
 
-var players = [1]
+var players = []
 
 func clear_players():
 	players.clear()

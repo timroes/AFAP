@@ -12,5 +12,5 @@ func show():
 	overlay.show()
 	
 func _input(event):
-	if event.is_action_pressed("pause"):
+	if event.is_action_pressed("start_game"):
 		get_tree().reload_current_scene()
