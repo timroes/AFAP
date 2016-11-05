@@ -1,6 +1,8 @@
 extends Node
 
-const SCROLL_SPEED = 150.0
+const INITIAL_SCROLL_SPEED = 150.0
+const SCROLL_ACCELERATION = 15.0
+const MAX_SCROLL_SPEED = 450.0
 
 const player = preload("res://player/player.tscn")
 
@@ -13,6 +15,7 @@ onready var world_border = get_node("camera/world_border")
 var camera_pos = Vector2()
 var players_alive
 var players_count
+var scroll_speed = INITIAL_SCROLL_SPEED
 
 func _ready():
 	# Called every time the node is added to the scene.
@@ -56,6 +59,7 @@ func end_game():
 
 func _fixed_process(delta):
 	if not disable_scroll:
-		camera_pos.x += delta * SCROLL_SPEED
+		scroll_speed = min(scroll_speed + delta * SCROLL_ACCELERATION, MAX_SCROLL_SPEED)
+		camera_pos.x += delta * scroll_speed
 		camera.set_pos(camera_pos)
 
