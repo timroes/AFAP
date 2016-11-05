@@ -165,16 +165,17 @@ func _fixed_process(delta):
 	
 		var norm = get_collision_normal()
 		var angle = abs(norm.angle() - PI)
-		
+
 		motion = norm.slide(motion)
 		velocity = norm.slide(velocity)
 		move(motion)
-		
+
 		if angle < 0.0001:
 			self.state = STATE_ON_GROUND
 		else:
-			self.state = STATE_WALL_SLIDING
-			wall_slide_side = sign(norm.x)
+			if is_colliding() and not get_collider().is_in_group("world_border"):
+				self.state = STATE_WALL_SLIDING
+				wall_slide_side = sign(norm.x)
 			
 	jump_pressed = false
 	

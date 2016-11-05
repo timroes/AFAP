@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=1]
+[gd_scene load_steps=15 format=1]
 
 [ext_resource path="res://scenes/game.gd" type="Script" id=1]
 [ext_resource path="res://world/world_generator.tscn" type="PackedScene" id=2]
@@ -10,22 +10,27 @@
 [ext_resource path="res://pause/pause.tex" type="Texture" id=8]
 [ext_resource path="res://shaders/white.tex" type="Texture" id=9]
 
-[sub_resource type="CanvasItemShader" id=1]
+[sub_resource type="CanvasItemShader" id=6]
 
 _code = { "fragment":"COLOR.rgb = vec3(dot(COLOR.rgb, vec3(0.299, 0.587, 0.114)));", "fragment_ofs":0, "light":"", "light_ofs":0, "vertex":"", "vertex_ofs":0 }
 
-[sub_resource type="CanvasItemMaterial" id=2]
+[sub_resource type="CanvasItemMaterial" id=7]
 
-shader/shader = SubResource( 1 )
+shader/shader = SubResource( 6 )
 shader/shading_mode = 0
 
-[sub_resource type="CanvasItemShader" id=3]
+[sub_resource type="RectangleShape2D" id=5]
+
+custom_solver_bias = 0.0
+extents = Vector2( 32, 547 )
+
+[sub_resource type="CanvasItemShader" id=8]
 
 _code = { "fragment":"uniform color base=color(0.75,0.6,0.6,1.0);\nuniform float frequency=60;\nuniform float depth = 0.005;\n\nvec2 uv = SCREEN_UV;\nuv.x += sin(uv.y*frequency+TIME)*depth;\nuv.x = clamp(uv.x,0,1);\n\nvec3 c = texscreen(uv);\n\nfloat v = dot(c,vec3(0.33333,0.33333,0.33333));\nv=sqrt(v);\n\nCOLOR.rgb= base.rgb*v;\n", "fragment_ofs":0, "light":"", "light_ofs":0, "vertex":"", "vertex_ofs":0 }
 
-[sub_resource type="CanvasItemMaterial" id=4]
+[sub_resource type="CanvasItemMaterial" id=9]
 
-shader/shader = SubResource( 3 )
+shader/shader = SubResource( 8 )
 shader/shading_mode = 0
 shader_param/base = Color( 0.804688, 0.765887, 0.556366, 1 )
 shader_param/frequency = 50.0
@@ -38,11 +43,9 @@ disable_scroll = false
 
 [node name="world" type="Node2D" parent="."]
 
-material/material = SubResource( 2 )
+material/material = SubResource( 7 )
 
 [node name="world_generator" parent="world" instance=ExtResource( 2 )]
-
-transform/pos = Vector2( 0, 0 )
 
 [node name="demo_world" type="Node2D" parent="world"]
 
@@ -131,9 +134,29 @@ drag_margin/top = 0.2
 drag_margin/right = 0.2
 drag_margin/bottom = 0.2
 
+[node name="world_border" type="StaticBody2D" parent="camera" groups=[ "world_border" ]]
+
+transform/pos = Vector2( 1920, 0 )
+input/pickable = false
+shapes/0/shape = SubResource( 5 )
+shapes/0/transform = Matrix32( 1, 0, 0, 1, 32, 547 )
+shapes/0/trigger = false
+collision/layers = 1
+collision/mask = 1
+constant_linear_velocity = Vector2( 0, 0 )
+constant_angular_velocity = 0.0
+friction = 1.0
+bounce = 0.0
+
+[node name="collision" type="CollisionShape2D" parent="camera/world_border"]
+
+transform/pos = Vector2( 32, 547 )
+shape = SubResource( 5 )
+trigger = false
+_update_shape_index = 0
+
 [node name="ParallaxBackground" type="ParallaxBackground" parent="."]
 
-editor/display_folded = true
 layer = -1
 offset = Vector2( 960, 0 )
 rotation = 0.0
@@ -241,7 +264,7 @@ stretch_mode = 0
 
 [node name="pauseeffect" type="TextureFrame" parent="pause/pause_overlay"]
 
-material/material = SubResource( 4 )
+material/material = SubResource( 9 )
 anchor/right = 1
 anchor/bottom = 1
 focus/ignore_mouse = true

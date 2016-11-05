@@ -8,6 +8,7 @@ export(bool) var disable_scroll = false
 
 onready var camera = get_node("camera")
 onready var end_screen = get_node("end")
+onready var world_border = get_node("camera/world_border")
 
 var camera_pos = Vector2()
 var players_alive
@@ -21,7 +22,15 @@ func _ready():
 	setup_players()
 	# End any possible pause when game starts
 	get_tree().set_pause(false)
+	
+	# Register for viewport size changed (to move world border)
+	camera.get_viewport().connect("size_changed", self, "viewport_size_changed")
+	viewport_size_changed()
 
+func viewport_size_changed():
+	# Move the invisible world border to the right side of the visible viewport
+	var world_border_pos = Vector2(camera.get_viewport().get_visible_rect().size.width, 0)
+	world_border.set_pos(world_border_pos)
 
 func setup_players():
 	var ps = players.get_players()
