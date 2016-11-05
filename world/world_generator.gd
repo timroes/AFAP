@@ -4,6 +4,11 @@ extends Node2D
 # a new snippet is loaded.
 const PRELOAD_HORIZON = 500
 
+# The pixel value of how far a screen must be scrolled out of the visible view before it
+# will be unloaded. Should at least be the size, that a player can partially leave the screen
+# on the left before dying.
+const UNLOAD_HORIZON = 100
+
 var snippets = []
 var snippet_count
 
@@ -28,7 +33,7 @@ func _process(delta):
 	
 	for i in range(get_child_count()):
 		var child = get_child(i)
-		if child.get_global_pos().x + child.snippet_width <  camera.get_global_pos().x:
+		if child.get_global_pos().x + child.snippet_width < camera.get_global_pos().x - UNLOAD_HORIZON:
 			child.queue_free()
 
 func next_snippet():
