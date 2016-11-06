@@ -1,10 +1,11 @@
-[gd_scene load_steps=6 format=1]
+[gd_scene load_steps=7 format=1]
 
 [ext_resource path="res://world/snippets/snippet.gd" type="Script" id=1]
 [ext_resource path="res://world/snippets/shared/border.tscn" type="PackedScene" id=2]
 [ext_resource path="res://world/objects/box.tscn" type="PackedScene" id=3]
 [ext_resource path="res://world/objects/saw.tscn" type="PackedScene" id=4]
 [ext_resource path="res://world/objects/item.tscn" type="PackedScene" id=5]
+[ext_resource path="res://world/objects/spikes.tscn" type="PackedScene" id=6]
 
 [node name="simple_steps" type="Node2D"]
 
@@ -48,5 +49,20 @@ transform/pos = Vector2( 1472, 960 )
 [node name="item" parent="." instance=ExtResource( 5 )]
 
 transform/pos = Vector2( 544, 704 )
+
+[node name="spikes" parent="." instance=ExtResource( 6 )]
+
+transform/pos = Vector2( 416, 64 )
+transform/rot = 180.0
+
+[node name="spikes1" parent="." instance=ExtResource( 6 )]
+
+transform/pos = Vector2( 1024, 64 )
+transform/rot = 180.0
+
+[node name="spikes2" parent="." instance=ExtResource( 6 )]
+
+transform/pos = Vector2( 1600, 64 )
+transform/rot = 180.0
 
 

@@ -1,0 +1,85 @@
+[gd_scene load_steps=6 format=1]
+
+[ext_resource path="res://world/snippets/snippet.gd" type="Script" id=1]
+[ext_resource path="res://world/snippets/shared/border.tscn" type="PackedScene" id=2]
+[ext_resource path="res://world/objects/box.tscn" type="PackedScene" id=3]
+[ext_resource path="res://world/objects/item.tscn" type="PackedScene" id=4]
+[ext_resource path="res://world/objects/spikes.tscn" type="PackedScene" id=5]
+
+[node name="floors" type="Node2D"]
+
+script/script = ExtResource( 1 )
+snippet_width = 1920
+
+[node name="border" parent="." instance=ExtResource( 2 )]
+
+[node name="box" parent="." instance=ExtResource( 3 )]
+
+transform/pos = Vector2( 160, 1024 )
+
+[node name="box1" parent="." instance=ExtResource( 3 )]
+
+transform/pos = Vector2( 416, 832 )
+
+[node name="box2" parent="." instance=ExtResource( 3 )]
+
+transform/pos = Vector2( 544, 704 )
+
+[node name="box3" parent="." instance=ExtResource( 3 )]
+
+transform/pos = Vector2( 832, 704 )
+
+[node name="box4" parent="." instance=ExtResource( 3 )]
+
+transform/pos = Vector2( 960, 832 )
+
+[node name="box5" parent="." instance=ExtResource( 3 )]
+
+transform/pos = Vector2( 1216, 832 )
+
+[node name="box6" parent="." instance=ExtResource( 3 )]
+
+transform/pos = Vector2( 1344, 832 )
+
+[node name="box7" parent="." instance=ExtResource( 3 )]
+
+transform/pos = Vector2( 1120, 192 )
+
+[node name="box8" parent="." instance=ExtResource( 3 )]
+
+transform/pos = Vector2( 1248, 192 )
+
+[node name="box9" parent="." instance=ExtResource( 3 )]
+
+transform/pos = Vector2( 1376, 192 )
+
+[node name="box10" parent="." instance=ExtResource( 3 )]
+
+transform/pos = Vector2( 544, 192 )
+
+[node name="box11" parent="." instance=ExtResource( 3 )]
+
+transform/pos = Vector2( 1696, 1024 )
+
+[node name="item" parent="." instance=ExtResource( 4 )]
+
+transform/pos = Vector2( 896, 512 )
+
+[node name="item1" parent="." instance=ExtResource( 4 )]
+
+transform/pos = Vector2( 1568, 128 )
+
+[node name="spikes" parent="." instance=ExtResource( 5 )]
+
+transform/pos = Vector2( 672, 1024 )
+
+[node name="spikes2" parent="." instance=ExtResource( 5 )]
+
+transform/pos = Vector2( 1568, 1024 )
+
+[node name="spikes1" parent="." instance=ExtResource( 5 )]
+
+transform/pos = Vector2( 1376, 192 )
+transform/rot = 180.0
+
+

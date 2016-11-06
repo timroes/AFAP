@@ -1,0 +1,91 @@
+[gd_scene load_steps=10 format=1]
+
+[ext_resource path="res://world/snippets/snippet.gd" type="Script" id=1]
+[ext_resource path="res://world/snippets/shared/border.tscn" type="PackedScene" id=2]
+[ext_resource path="res://world/objects/box.tscn" type="PackedScene" id=3]
+[ext_resource path="res://world/ground/platform_left.tscn" type="PackedScene" id=4]
+[ext_resource path="res://world/ground/platform_middle.tscn" type="PackedScene" id=5]
+[ext_resource path="res://world/ground/platform_right.tscn" type="PackedScene" id=6]
+[ext_resource path="res://world/objects/spikes.tscn" type="PackedScene" id=7]
+[ext_resource path="res://world/objects/saw.tscn" type="PackedScene" id=8]
+[ext_resource path="res://world/objects/item.tscn" type="PackedScene" id=9]
+
+[node name="switch_the_floor" type="Node2D"]
+
+script/script = ExtResource( 1 )
+snippet_width = 1920
+
+[node name="border" parent="." instance=ExtResource( 2 )]
+
+[node name="box" parent="." instance=ExtResource( 3 )]
+
+transform/pos = Vector2( 96, 1024 )
+
+[node name="box2" parent="." instance=ExtResource( 3 )]
+
+transform/pos = Vector2( 1408, 1024 )
+
+[node name="box1" parent="." instance=ExtResource( 3 )]
+
+transform/pos = Vector2( 576, 736 )
+
+[node name="box3" parent="." instance=ExtResource( 3 )]
+
+transform/pos = Vector2( 1248, 736 )
+
+[node name="platform1" type="Node2D" parent="."]
+
+transform/pos = Vector2( 480, 768 )
+
+[node name="platform_left" parent="platform1" instance=ExtResource( 4 )]
+
+transform/pos = Vector2( 0, 32 )
+
+[node name="platform_middle" parent="platform1" instance=ExtResource( 5 )]
+
+transform/pos = Vector2( 384, 32 )
+transform/scale = Vector2( 6, 1 )
+
+[node name="platform_right" parent="platform1" instance=ExtResource( 6 )]
+
+transform/pos = Vector2( 832, 32 )
+
+[node name="spikes" parent="platform1" instance=ExtResource( 7 )]
+
+transform/pos = Vector2( 224, -32 )
+
+[node name="spikes1" parent="platform1" instance=ExtResource( 7 )]
+
+transform/pos = Vector2( 640, -320 )
+transform/rot = 180.0
+
+[node name="platform2" type="Node2D" parent="."]
+
+transform/pos = Vector2( 896, 416 )
+
+[node name="platform_left" parent="platform2" instance=ExtResource( 4 )]
+
+transform/pos = Vector2( 0, 32 )
+
+[node name="platform_middle" parent="platform2" instance=ExtResource( 5 )]
+
+transform/pos = Vector2( 256, 32 )
+transform/scale = Vector2( 3, 1 )
+
+[node name="platform_right" parent="platform2" instance=ExtResource( 6 )]
+
+transform/pos = Vector2( 512, 32 )
+
+[node name="saw" parent="." instance=ExtResource( 8 )]
+
+transform/pos = Vector2( 608, 960 )
+
+[node name="saw1" parent="." instance=ExtResource( 8 )]
+
+transform/pos = Vector2( 1056, 960 )
+
+[node name="item" parent="." instance=ExtResource( 9 )]
+
+transform/pos = Vector2( 832, 960 )
+
+
