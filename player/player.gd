@@ -8,7 +8,6 @@ const GRAVITY = 1450.0
 const WALL_SLIDE_GRAVITY = GRAVITY / 10
 
 const JUMPING_START_VELOCITY = 750.0
-const JUMPING_ACCELERATION = 400.0
 
 # The maximum velocity a player can have while being in free fall
 const MAX_FALLING_VELOCITY = 12000
@@ -61,14 +60,6 @@ onready var camera = utils.get_camera()
 onready var point_of_death = get_node("point_of_death")
 onready var sprite = get_node("sprite")
 
-var motion1
-var motion2
-var motion3
-var motion4
-var motion5
-var motion6
-var motion7
-
 var velocity = Vector2()
 
 var state = STATE_IN_AIR setget set_state
@@ -88,28 +79,12 @@ func _ready():
 	set_process_input(true)
 	set_process(true)
 	sprite.set_modulate(player_color)
-	
-	motion1 = get_node("/root/game/debug_output%s/motion1" % player_number)
-	motion2 = get_node("/root/game/debug_output%s/motion2" % player_number)
-	motion3 = get_node("/root/game/debug_output%s/motion3" % player_number)
-	motion4 = get_node("/root/game/debug_output%s/motion4" % player_number)
-	motion5 = get_node("/root/game/debug_output%s/motion5" % player_number)
-	motion6 = get_node("/root/game/debug_output%s/motion6" % player_number)
-	motion7 = get_node("/root/game/debug_output%s/motion7" % player_number)
 
 func set_player_number(newval):
 	player_number = newval
 	action_jump = "player%d_jump" % player_number
 	action_left = "player%d_left" % player_number
 	action_right = "player%d_right" % player_number
-	
-	motion1 = get_node("/root/game/debug_output%s/motion1" % player_number)
-	motion2 = get_node("/root/game/debug_output%s/motion2" % player_number)
-	motion3 = get_node("/root/game/debug_output%s/motion3" % player_number)
-	motion4 = get_node("/root/game/debug_output%s/motion4" % player_number)
-	motion5 = get_node("/root/game/debug_output%s/motion5" % player_number)
-	motion6 = get_node("/root/game/debug_output%s/motion6" % player_number)
-	motion7 = get_node("/root/game/debug_output%s/motion7" % player_number)
 	
 func set_player_color(newval):
 	player_color = newval
@@ -192,9 +167,7 @@ func _fixed_process(delta):
 		velocity.y = min(velocity.y, MAX_FALLING_VELOCITY)
 	
 	var motion = velocity * delta
-	motion1.set_text("Motion: %s" % motion)
 	motion = move(motion)
-	motion2.set_text("Motion (rest): %s" % motion)
 	
 	if is_colliding():
 		
@@ -208,18 +181,10 @@ func _fixed_process(delta):
 			headjump(collider)
 			return
 	
-		motion5.set_text("Norm: %s" % norm)
 
 		motion = norm.slide(motion)
-		motion3.set_text("Motion 2: %s" % motion)
 		velocity = norm.slide(velocity)
 		motion = move(motion)
-		motion4.set_text("Motion 2 (rest): %s" % motion)
-
-		if is_colliding():
-			motion6.set_text("Crash after sliding: %s" % get_collision_normal())
-		else:
-			motion6.set_text("No Crash after sliding")
 
 		if collided_from_above or (is_colliding() and vectors.points_towards(get_collision_normal(), 180)):
 			# If either the first part of the movement or the slided part causes
@@ -236,13 +201,7 @@ func _fixed_process(delta):
 		# he must be in the air, since every other case would cause a collision
 		# (e.g. the vertical movement due to gravity into the ground)
 		self.state = STATE_IN_AIR
-		motion3.set_text("Motion 2: -")
-		motion4.set_text("Motion 2 (rest): -")
-		motion5.set_text("Norm: -")
-		motion6.set_text("No Sliding")
 		
-	motion7.set_text("State: %s" % STATE_NAME_MAP[str(state)])
-			
 	jump_pressed = false
 	
 func headjump(other_player):
