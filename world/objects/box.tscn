@@ -9,7 +9,7 @@ extents = Vector2( 64, 64 )
 
 [node name="box" type="Node2D"]
 
-[node name="body" type="StaticBody2D" parent="."]
+[node name="body" type="StaticBody2D" parent="." groups=[ "wallslide" ]]
 
 transform/pos = Vector2( 64, -64 )
 input/pickable = false

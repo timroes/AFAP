@@ -227,7 +227,7 @@ func _fixed_process(delta):
 			# It doesn't matter which part causes the collision, since we are still on the ground.
 			self.state = STATE_ON_GROUND
 		else:
-			if not collider.is_in_group("world_border"):
+			if collider.is_in_group("wallslide"):
 				self.state = STATE_WALL_SLIDING
 				wall_slide_side = sign(norm.x)
 	 
