@@ -6,6 +6,7 @@
 
 [node name="start_screen" type="Control"]
 
+editor/display_folded = true
 anchor/right = 1
 anchor/bottom = 1
 focus/ignore_mouse = false

@@ -1,6 +1,8 @@
 extends KinematicBody2D
 
 signal died(player_number)
+signal picked_up_item(item)
+signal used_item()
 
 const GRAVITY = 1450.0
 
@@ -60,6 +62,7 @@ onready var camera = utils.get_camera()
 onready var point_of_death = get_node("point_of_death")
 onready var sprite = get_node("sprite")
 
+var gravity_direction = 1
 var velocity = Vector2()
 
 var state = STATE_IN_AIR setget set_state
@@ -71,20 +74,25 @@ var wallslide_frozen = -1
 var action_jump
 var action_left
 var action_right
+var action_item
 
 var jump_pressed
+
+var current_item
 
 func _ready():
 	set_fixed_process(true)
 	set_process_input(true)
 	set_process(true)
 	sprite.set_modulate(player_color)
+	items.connect("gravity_changed", self, "gravity_changed")
 
 func set_player_number(newval):
 	player_number = newval
 	action_jump = "player%d_jump" % player_number
 	action_left = "player%d_left" % player_number
 	action_right = "player%d_right" % player_number
+	action_item = "player%d_item" % player_number
 	
 func set_player_color(newval):
 	player_color = newval
@@ -100,6 +108,13 @@ func set_state(newval):
 func _input(event):
 	if event.is_action_pressed(action_jump):
 		jump_pressed = true
+	if event.is_action_pressed(action_item):
+		use_item()
+
+# Toggle the gravity for this character and flip his sprite
+func gravity_changed():
+	gravity_direction *= -1
+	sprite.set_flip_v(!sprite.is_flipped_v())
 
 func die():
 	# Disable input of this character, since it's dead now
@@ -107,11 +122,29 @@ func die():
 	# TODO: die animation
 	emit_signal("died", player_number)
 	hide()
+	
+func pickup_item():
+	# If the player already holds an item, don't pick up another one
+	if current_item != null:
+		return false
+
+	# Get a random item and send out pick up event
+	current_item = items.get_random_item()
+	emit_signal("picked_up_item", current_item)
+	return true
+	
+func use_item():
+	if current_item == null:
+		return
+	
+	items.use_item(current_item, self)
+	current_item = null
+	emit_signal("used_item")
 
 func _process(delta):
 	if point_of_death.get_global_pos().x < camera.get_global_pos().x:
 		die()
-		
+
 func _fixed_process(delta):
 	var left_pressed = Input.is_action_pressed(action_left)
 	var right_pressed = Input.is_action_pressed(action_right)
@@ -146,9 +179,10 @@ func _fixed_process(delta):
 				# Walljump
 				velocity = WALLJUMP_START_VECTOR
 				velocity.x *= wall_slide_side
+				velocity.y *= gravity_direction
 				x_movement_frozen = WALLJUMP_X_FREEZE_TIME
 			else:
-				velocity.y = -JUMPING_START_VELOCITY
+				velocity.y = -gravity_direction * JUMPING_START_VELOCITY
 			self.state = STATE_IN_AIR
 
 	# Limit horizontal movement speed
@@ -159,12 +193,12 @@ func _fixed_process(delta):
 			(wall_slide_side == -1 and right_pressed or \
 			wall_slide_side == 1 and left_pressed):
 		# If the user is currently wall sliding and presses towards the wall, fall slower (aka wall slide)
-		velocity.y += WALL_SLIDE_GRAVITY * delta
-		velocity.y = min(velocity.y, MAX_WALL_SLIDE_VELOCITY)
+		velocity.y += gravity_direction * WALL_SLIDE_GRAVITY * delta
+		velocity.y = clamp(-MAX_WALL_SLIDE_VELOCITY, velocity.y, MAX_WALL_SLIDE_VELOCITY)
 	else:
 		# Apply gravity in every tick
-		velocity.y += GRAVITY * delta
-		velocity.y = min(velocity.y, MAX_FALLING_VELOCITY)
+		velocity.y += gravity_direction * GRAVITY * delta
+		velocity.y = clamp(-MAX_FALLING_VELOCITY, velocity.y, MAX_FALLING_VELOCITY)
 	
 	var motion = velocity * delta
 	motion = move(motion)
@@ -173,7 +207,11 @@ func _fixed_process(delta):
 		
 		var collider = get_collider()
 		var norm = get_collision_normal()
-		var collided_from_above = vectors.points_towards(norm, 180)
+		# gravity_direction + 1 * 90 will result in:
+		# gravity_direction == -1 => 0°
+		# gravity_direction == 1 => 180° 
+		# which is basically just negating the required 180, if the gravity is negated
+		var collided_from_above = vectors.points_towards(norm, (gravity_direction + 1) * 90)
 	
 		if collider.is_in_group("killing"):
 			die()
@@ -181,12 +219,11 @@ func _fixed_process(delta):
 			headjump(collider)
 			return
 	
-
 		motion = norm.slide(motion)
 		velocity = norm.slide(velocity)
 		motion = move(motion)
 
-		if collided_from_above or (is_colliding() and vectors.points_towards(get_collision_normal(), 180)):
+		if collided_from_above or (is_colliding() and vectors.points_towards(get_collision_normal(), (gravity_direction + 1) * 90)):
 			# If either the first part of the movement or the slided part causes
 			# a collision with the ground set the player state to on the ground.
 			# It doesn't matter which part causes the collision, since we are still on the ground.
@@ -206,13 +243,13 @@ func _fixed_process(delta):
 	
 func headjump(other_player):
 	# Bounce of the other player a bit
-	velocity.y = -HEADJUMP_BOUNCE_VELOCITY
+	velocity.y = -gravity_direction * HEADJUMP_BOUNCE_VELOCITY
 	self.state = STATE_IN_AIR
 	# TODO: Maybe make the downwawrds velocity of the headjumped player dependant on the jumpings
 	# player y velocity.
 	# Stop other players x velocity when jumping onto his head and give him some downwards velocity
 	# (as long as he's not already moving downwards faster)
-	other_player.velocity = Vector2(0, max(other_player.velocity.y, HEADJUMPED_PUSH_DOWN_VELOCITY))
+	other_player.velocity = Vector2(0, gravity_direction * max(abs(other_player.velocity.y), HEADJUMPED_PUSH_DOWN_VELOCITY))
 	# Freeze other players wallslide for some time, so when he was wallsliding while being headjumped
 	# he will fall for some time before able to slide again
 	other_player.wallslide_frozen = HEADJUMPED_WALLSLIDE_FREEZE_TIME

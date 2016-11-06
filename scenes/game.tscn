@@ -1,14 +1,16 @@
-[gd_scene load_steps=15 format=1]
+[gd_scene load_steps=17 format=1]
 
 [ext_resource path="res://scenes/game.gd" type="Script" id=1]
 [ext_resource path="res://world/world_generator.tscn" type="PackedScene" id=2]
 [ext_resource path="res://world/objects/box.tscn" type="PackedScene" id=3]
-[ext_resource path="res://world/mf_bg-1080p.tex" type="Texture" id=4]
-[ext_resource path="res://ending.gd" type="Script" id=5]
-[ext_resource path="res://fonts/minecrafter.fnt" type="BitmapFont" id=6]
-[ext_resource path="res://pause.gd" type="Script" id=7]
-[ext_resource path="res://pause/pause.tex" type="Texture" id=8]
-[ext_resource path="res://shaders/white.tex" type="Texture" id=9]
+[ext_resource path="res://hud/hud.gd" type="Script" id=4]
+[ext_resource path="res://hud/player_hud.tscn" type="PackedScene" id=5]
+[ext_resource path="res://world/mf_bg-1080p.tex" type="Texture" id=6]
+[ext_resource path="res://ending.gd" type="Script" id=7]
+[ext_resource path="res://fonts/minecrafter.fnt" type="BitmapFont" id=8]
+[ext_resource path="res://pause.gd" type="Script" id=9]
+[ext_resource path="res://pause/pause.tex" type="Texture" id=10]
+[ext_resource path="res://shaders/white.tex" type="Texture" id=11]
 
 [sub_resource type="CanvasItemShader" id=1]
 
@@ -39,7 +41,7 @@ shader_param/depth = 0.003
 [node name="game" type="Node"]
 
 script/script = ExtResource( 1 )
-disable_scroll = true
+disable_scroll = false
 
 [node name="world" type="Node2D" parent="."]
 
@@ -116,9 +118,10 @@ transform/pos = Vector2( 256, 1024 )
 
 transform/pos = Vector2( 1024, 544 )
 
+[node name="players" type="Node2D" parent="."]
+
 [node name="camera" type="Camera2D" parent="."]
 
-editor/display_folded = true
 anchor_mode = 0
 rotating = false
 current = true
@@ -138,6 +141,7 @@ drag_margin/bottom = 0.2
 
 [node name="world_border" type="StaticBody2D" parent="camera" groups=[ "world_border" ]]
 
+editor/display_folded = true
 transform/pos = Vector2( 1920, 0 )
 input/pickable = false
 shapes/0/shape = SubResource( 3 )
@@ -156,6 +160,58 @@ transform/pos = Vector2( 32, 547 )
 shape = SubResource( 3 )
 trigger = false
 _update_shape_index = 0
+
+[node name="hud" type="Control" parent="camera"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 0.0
+margin/top = -22.0
+margin/right = 40.0
+margin/bottom = 18.0
+script/script = ExtResource( 4 )
+
+[node name="player0_hud" parent="camera/hud" instance=ExtResource( 5 )]
+
+visibility/visible = false
+margin/left = 32.0
+margin/top = 32.0
+margin/right = 72.0
+margin/bottom = 72.0
+
+[node name="player1_hud" parent="camera/hud" instance=ExtResource( 5 )]
+
+visibility/visible = false
+margin/left = 256.0
+margin/top = 32.0
+margin/right = 296.0
+margin/bottom = 72.0
+
+[node name="player2_hud" parent="camera/hud" instance=ExtResource( 5 )]
+
+visibility/visible = false
+margin/left = 480.0
+margin/top = 32.0
+margin/right = 520.0
+margin/bottom = 72.0
+
+[node name="player3_hud" parent="camera/hud" instance=ExtResource( 5 )]
+
+visibility/visible = false
+margin/left = 704.0
+margin/top = 32.0
+margin/right = 744.0
+margin/bottom = 72.0
+
+[node name="player4_hud" parent="camera/hud" instance=ExtResource( 5 )]
+
+visibility/visible = false
+margin/left = 928.0
+margin/top = 32.0
+margin/right = 968.0
+margin/bottom = 72.0
 
 [node name="ParallaxBackground" type="ParallaxBackground" parent="."]
 
@@ -180,7 +236,7 @@ motion/mirroring = Vector2( 1920, 0 )
 
 [node name="Sprite" type="Sprite" parent="ParallaxBackground/ParallaxLayer"]
 
-texture = ExtResource( 4 )
+texture = ExtResource( 6 )
 
 [node name="end" type="CanvasLayer" parent="."]
 
@@ -190,7 +246,7 @@ layer = 1
 offset = Vector2( 0, 0 )
 rotation = 0.0
 scale = Vector2( 1, 1 )
-script/script = ExtResource( 5 )
+script/script = ExtResource( 7 )
 
 [node name="end_overlay" type="Control" parent="end"]
 
@@ -216,7 +272,7 @@ margin/left = 800.0
 margin/top = 512.0
 margin/right = 1123.0
 margin/bottom = 596.0
-custom_fonts/font = ExtResource( 6 )
+custom_fonts/font = ExtResource( 8 )
 custom_colors/font_color = Color( 0.336864, 0.145767, 0.910156, 1 )
 text = "THE END\n\nPress Start to play again"
 align = 1
@@ -227,17 +283,15 @@ max_lines_visible = -1
 [node name="pause" type="CanvasLayer" parent="."]
 
 process/pause_mode = 2
-editor/display_folded = true
 layer = 1
 offset = Vector2( 0, 0 )
 rotation = 0.0
 scale = Vector2( 1, 1 )
-script/script = ExtResource( 7 )
+script/script = ExtResource( 9 )
 pause_on_unfocus = false
 
 [node name="pause_overlay" type="Control" parent="pause"]
 
-editor/display_folded = true
 visibility/visible = false
 anchor/right = 1
 anchor/bottom = 1
@@ -264,7 +318,7 @@ margin/left = 128.0
 margin/top = 128.0
 margin/right = 0.0
 margin/bottom = 0.0
-texture = ExtResource( 8 )
+texture = ExtResource( 10 )
 stretch_mode = 0
 
 [node name="pauseeffect" type="TextureFrame" parent="pause/pause_overlay"]
@@ -280,7 +334,7 @@ margin/left = 0.0
 margin/top = 0.0
 margin/right = 0.0
 margin/bottom = 0.0
-texture = ExtResource( 9 )
+texture = ExtResource( 11 )
 expand = true
 stretch_mode = 0
 

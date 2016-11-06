@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=1]
+[gd_scene load_steps=5 format=1]
 
 [ext_resource path="res://world/snippets/snippet.gd" type="Script" id=1]
 [ext_resource path="res://world/snippets/shared/border.tscn" type="PackedScene" id=2]
 [ext_resource path="res://world/objects/saw.tscn" type="PackedScene" id=3]
+[ext_resource path="res://world/objects/item.tscn" type="PackedScene" id=4]
 
 [node name="saw_floor" type="Node2D"]
 
@@ -34,5 +35,9 @@ transform/pos = Vector2( 1600, 960 )
 [node name="end_of_snippet" type="Position2D" parent="."]
 
 transform/pos = Vector2( 2026, 1098 )
+
+[node name="item" parent="." instance=ExtResource( 4 )]
+
+transform/pos = Vector2( 1024, 128 )
 
 

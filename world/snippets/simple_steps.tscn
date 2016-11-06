@@ -1,9 +1,10 @@
-[gd_scene load_steps=5 format=1]
+[gd_scene load_steps=6 format=1]
 
 [ext_resource path="res://world/snippets/snippet.gd" type="Script" id=1]
 [ext_resource path="res://world/snippets/shared/border.tscn" type="PackedScene" id=2]
 [ext_resource path="res://world/objects/box.tscn" type="PackedScene" id=3]
 [ext_resource path="res://world/objects/saw.tscn" type="PackedScene" id=4]
+[ext_resource path="res://world/objects/item.tscn" type="PackedScene" id=5]
 
 [node name="simple_steps" type="Node2D"]
 
@@ -43,5 +44,9 @@ transform/pos = Vector2( 1536, 1024 )
 [node name="saw" parent="." instance=ExtResource( 4 )]
 
 transform/pos = Vector2( 1472, 960 )
+
+[node name="item" parent="." instance=ExtResource( 5 )]
+
+transform/pos = Vector2( 544, 704 )
 
 

@@ -9,7 +9,9 @@ const player = preload("res://player/player.tscn")
 export(bool) var disable_scroll = false
 
 onready var camera = get_node("camera")
+onready var player_container = get_node("players")
 onready var end_screen = get_node("end")
+onready var hud = get_node("camera/hud")
 onready var world_border = get_node("camera/world_border")
 
 var camera_pos = Vector2()
@@ -45,7 +47,8 @@ func setup_players():
 		p.player_color = joined_player.color
 		p.set_pos(Vector2(500 + 100*joined_player.number, 200))
 		p.connect("died", self, "player_died")
-		add_child(p)
+		hud.add_player(p)
+		player_container.add_child(p)
 
 func player_died(player_number):
 	players_alive -= 1
@@ -62,4 +65,3 @@ func _fixed_process(delta):
 		scroll_speed = min(scroll_speed + delta * SCROLL_ACCELERATION, MAX_SCROLL_SPEED)
 		camera_pos.x += delta * scroll_speed
 		camera.set_pos(camera_pos)
-
