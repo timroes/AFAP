@@ -16,7 +16,6 @@ const MAX_FALLING_VELOCITY = 12000
 const MAX_WALL_SLIDE_VELOCITY = 100
 
 const MAX_VELOCITY_X = 500
-const MIN_VELOCITY_X = -500
 
 # The x-axis acceleration when the player moves right and left
 const X_ACCELERATION = 2500
@@ -34,8 +33,15 @@ const X_DECELERATION_AIR = 100
 
 # The initial vector 
 const WALLJUMP_START_VECTOR = Vector2(200, -700)
-# The amount of seconds after a walljump that horizontal movement control should be froozen
+# The amount of seconds after a walljump that horizontal movement control should be frozen
 const WALLJUMP_X_FREEZE_TIME = 0.15
+
+# The velocity which a player will get when jumping onto another player
+const HEADJUMP_BOUNCE_VELOCITY = 400
+# The velocity to which the player that got headjumped will be set
+const HEADJUMPED_PUSH_DOWN_VELOCITY = 350
+# The time for which a headjumped player cannot do a wallslide
+const HEADJUMPED_WALLSLIDE_FREEZE_TIME = 0.15
 
 const STATE_ON_GROUND = 0
 const STATE_IN_AIR = 2
@@ -55,20 +61,21 @@ onready var camera = utils.get_camera()
 onready var point_of_death = get_node("point_of_death")
 onready var sprite = get_node("sprite")
 
-onready var motion1 = get_node("/root/game/debug_output/motion1")
-onready var motion2 = get_node("/root/game/debug_output/motion2")
-onready var motion3 = get_node("/root/game/debug_output/motion3")
-onready var motion4 = get_node("/root/game/debug_output/motion4")
-onready var motion5 = get_node("/root/game/debug_output/motion5")
-onready var motion6 = get_node("/root/game/debug_output/motion6")
-onready var motion7 = get_node("/root/game/debug_output/motion7")
+var motion1
+var motion2
+var motion3
+var motion4
+var motion5
+var motion6
+var motion7
 
 var velocity = Vector2()
 
 var state = STATE_IN_AIR setget set_state
 
 var wall_slide_side
-var x_movement_froozen = -1
+var x_movement_frozen = -1
+var wallslide_frozen = -1
 
 var action_jump
 var action_left
@@ -81,12 +88,28 @@ func _ready():
 	set_process_input(true)
 	set_process(true)
 	sprite.set_modulate(player_color)
+	
+	motion1 = get_node("/root/game/debug_output%s/motion1" % player_number)
+	motion2 = get_node("/root/game/debug_output%s/motion2" % player_number)
+	motion3 = get_node("/root/game/debug_output%s/motion3" % player_number)
+	motion4 = get_node("/root/game/debug_output%s/motion4" % player_number)
+	motion5 = get_node("/root/game/debug_output%s/motion5" % player_number)
+	motion6 = get_node("/root/game/debug_output%s/motion6" % player_number)
+	motion7 = get_node("/root/game/debug_output%s/motion7" % player_number)
 
 func set_player_number(newval):
 	player_number = newval
 	action_jump = "player%d_jump" % player_number
 	action_left = "player%d_left" % player_number
 	action_right = "player%d_right" % player_number
+	
+	motion1 = get_node("/root/game/debug_output%s/motion1" % player_number)
+	motion2 = get_node("/root/game/debug_output%s/motion2" % player_number)
+	motion3 = get_node("/root/game/debug_output%s/motion3" % player_number)
+	motion4 = get_node("/root/game/debug_output%s/motion4" % player_number)
+	motion5 = get_node("/root/game/debug_output%s/motion5" % player_number)
+	motion6 = get_node("/root/game/debug_output%s/motion6" % player_number)
+	motion7 = get_node("/root/game/debug_output%s/motion7" % player_number)
 	
 func set_player_color(newval):
 	player_color = newval
@@ -113,15 +136,18 @@ func die():
 func _process(delta):
 	if point_of_death.get_global_pos().x < camera.get_global_pos().x:
 		die()
-
+		
 func _fixed_process(delta):
 	var left_pressed = Input.is_action_pressed(action_left)
 	var right_pressed = Input.is_action_pressed(action_right)
 	
-	if x_movement_froozen > 0:
-		x_movement_froozen -= delta
+	if x_movement_frozen > 0:
+		x_movement_frozen -= delta
+		
+	if wallslide_frozen > 0:
+		wallslide_frozen -= delta
 	
-	if x_movement_froozen <= 0:
+	if x_movement_frozen <= 0:
 		if right_pressed:
 			if state == STATE_IN_AIR:
 				velocity.x += X_ACCELERATION_AIR * delta
@@ -145,15 +171,16 @@ func _fixed_process(delta):
 				# Walljump
 				velocity = WALLJUMP_START_VECTOR
 				velocity.x *= wall_slide_side
-				x_movement_froozen = WALLJUMP_X_FREEZE_TIME
+				x_movement_frozen = WALLJUMP_X_FREEZE_TIME
 			else:
 				velocity.y = -JUMPING_START_VELOCITY
 			self.state = STATE_IN_AIR
 
 	# Limit horizontal movement speed
-	velocity.x = clamp(velocity.x, MIN_VELOCITY_X, MAX_VELOCITY_X)
+	velocity.x = clamp(velocity.x, -MAX_VELOCITY_X, MAX_VELOCITY_X)
 	
 	if state == STATE_WALL_SLIDING and velocity.y > 0 and \
+			wallslide_frozen <= 0 and \
 			(wall_slide_side == -1 and right_pressed or \
 			wall_slide_side == 1 and left_pressed):
 		# If the user is currently wall sliding and presses towards the wall, fall slower (aka wall slide)
@@ -172,14 +199,16 @@ func _fixed_process(delta):
 	if is_colliding():
 		
 		var collider = get_collider()
+		var norm = get_collision_normal()
+		var collided_from_above = vectors.points_towards(norm, 180)
 	
 		if collider.is_in_group("killing"):
 			die()
+		elif collider.is_in_group("player") and collided_from_above:
+			headjump(collider)
+			return
 	
-		var norm = get_collision_normal()
 		motion5.set_text("Norm: %s" % norm)
-		
-		var touched_ground = vectors.points_towards(norm, 180)
 
 		motion = norm.slide(motion)
 		motion3.set_text("Motion 2: %s" % motion)
@@ -192,13 +221,16 @@ func _fixed_process(delta):
 		else:
 			motion6.set_text("No Crash after sliding")
 
-		if touched_ground or (is_colliding() and vectors.points_towards(get_collision_normal(), 180)):
+		if collided_from_above or (is_colliding() and vectors.points_towards(get_collision_normal(), 180)):
+			# If either the first part of the movement or the slided part causes
+			# a collision with the ground set the player state to on the ground.
+			# It doesn't matter which part causes the collision, since we are still on the ground.
 			self.state = STATE_ON_GROUND
 		else:
 			if not collider.is_in_group("world_border"):
 				self.state = STATE_WALL_SLIDING
 				wall_slide_side = sign(norm.x)
-	
+	 
 	else:
 		# If the player hasn't collided with anything after the regular move,
 		# he must be in the air, since every other case would cause a collision
@@ -213,3 +245,15 @@ func _fixed_process(delta):
 			
 	jump_pressed = false
 	
+func headjump(other_player):
+	# Bounce of the other player a bit
+	velocity.y = -HEADJUMP_BOUNCE_VELOCITY
+	self.state = STATE_IN_AIR
+	# TODO: Maybe make the downwawrds velocity of the headjumped player dependant on the jumpings
+	# player y velocity.
+	# Stop other players x velocity when jumping onto his head and give him some downwards velocity
+	# (as long as he's not already moving downwards faster)
+	other_player.velocity = Vector2(0, max(other_player.velocity.y, HEADJUMPED_PUSH_DOWN_VELOCITY))
+	# Freeze other players wallslide for some time, so when he was wallsliding while being headjumped
+	# he will fall for some time before able to slide again
+	other_player.wallslide_frozen = HEADJUMPED_WALLSLIDE_FREEZE_TIME

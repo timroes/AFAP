@@ -285,14 +285,14 @@ texture = ExtResource( 9 )
 expand = true
 stretch_mode = 0
 
-[node name="debug_output" type="CanvasLayer" parent="."]
+[node name="debug_output0" type="CanvasLayer" parent="."]
 
 layer = 1
 offset = Vector2( 0, 0 )
 rotation = 0.0
 scale = Vector2( 1, 1 )
 
-[node name="motion1" type="Label" parent="debug_output"]
+[node name="motion1" type="Label" parent="debug_output0"]
 
 rect/scale = Vector2( 1.4, 1.4 )
 focus/ignore_mouse = true
@@ -309,7 +309,7 @@ percent_visible = 1.0
 lines_skipped = 0
 max_lines_visible = -1
 
-[node name="motion2" type="Label" parent="debug_output"]
+[node name="motion2" type="Label" parent="debug_output0"]
 
 rect/scale = Vector2( 1.4, 1.4 )
 focus/ignore_mouse = true
@@ -326,7 +326,7 @@ percent_visible = 1.0
 lines_skipped = 0
 max_lines_visible = -1
 
-[node name="motion3" type="Label" parent="debug_output"]
+[node name="motion3" type="Label" parent="debug_output0"]
 
 rect/scale = Vector2( 1.4, 1.4 )
 focus/ignore_mouse = true
@@ -343,7 +343,7 @@ percent_visible = 1.0
 lines_skipped = 0
 max_lines_visible = -1
 
-[node name="motion4" type="Label" parent="debug_output"]
+[node name="motion4" type="Label" parent="debug_output0"]
 
 rect/scale = Vector2( 1.4, 1.4 )
 focus/ignore_mouse = true
@@ -360,7 +360,7 @@ percent_visible = 1.0
 lines_skipped = 0
 max_lines_visible = -1
 
-[node name="motion6" type="Label" parent="debug_output"]
+[node name="motion6" type="Label" parent="debug_output0"]
 
 rect/scale = Vector2( 1.4, 1.4 )
 focus/ignore_mouse = true
@@ -377,7 +377,7 @@ percent_visible = 1.0
 lines_skipped = 0
 max_lines_visible = -1
 
-[node name="motion7" type="Label" parent="debug_output"]
+[node name="motion7" type="Label" parent="debug_output0"]
 
 rect/scale = Vector2( 1.4, 1.4 )
 focus/ignore_mouse = true
@@ -394,7 +394,7 @@ percent_visible = 1.0
 lines_skipped = 0
 max_lines_visible = -1
 
-[node name="motion5" type="Label" parent="debug_output"]
+[node name="motion5" type="Label" parent="debug_output0"]
 
 rect/scale = Vector2( 1.4, 1.4 )
 focus/ignore_mouse = true
@@ -404,6 +404,132 @@ size_flags/vertical = 0
 margin/left = 32.0
 margin/top = 64.0
 margin/right = 143.0
+margin/bottom = 90.0
+custom_fonts/font = ExtResource( 10 )
+text = "Motion 2:"
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="debug_output1" type="CanvasLayer" parent="."]
+
+layer = 1
+offset = Vector2( 0, 0 )
+rotation = 0.0
+scale = Vector2( 1, 1 )
+
+[node name="motion1" type="Label" parent="debug_output1"]
+
+rect/scale = Vector2( 1.4, 1.4 )
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 1536.0
+margin/top = 32.0
+margin/right = 1641.0
+margin/bottom = 58.0
+custom_fonts/font = ExtResource( 10 )
+text = "Motion 1:"
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="motion2" type="Label" parent="debug_output1"]
+
+rect/scale = Vector2( 1.4, 1.4 )
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 1536.0
+margin/top = 96.0
+margin/right = 1641.0
+margin/bottom = 122.0
+custom_fonts/font = ExtResource( 10 )
+text = "Motion Rest:"
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="motion3" type="Label" parent="debug_output1"]
+
+rect/scale = Vector2( 1.4, 1.4 )
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 1536.0
+margin/top = 128.0
+margin/right = 1647.0
+margin/bottom = 154.0
+custom_fonts/font = ExtResource( 10 )
+text = "Motion 2:"
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="motion4" type="Label" parent="debug_output1"]
+
+rect/scale = Vector2( 1.4, 1.4 )
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 1536.0
+margin/top = 160.0
+margin/right = 1647.0
+margin/bottom = 186.0
+custom_fonts/font = ExtResource( 10 )
+text = "Motion 2:"
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="motion6" type="Label" parent="debug_output1"]
+
+rect/scale = Vector2( 1.4, 1.4 )
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 1536.0
+margin/top = 192.0
+margin/right = 1647.0
+margin/bottom = 218.0
+custom_fonts/font = ExtResource( 10 )
+text = "Motion 2:"
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="motion7" type="Label" parent="debug_output1"]
+
+rect/scale = Vector2( 1.4, 1.4 )
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 1536.0
+margin/top = 224.0
+margin/right = 1647.0
+margin/bottom = 250.0
+custom_fonts/font = ExtResource( 10 )
+text = "Motion 2:"
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="motion5" type="Label" parent="debug_output1"]
+
+rect/scale = Vector2( 1.4, 1.4 )
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 1536.0
+margin/top = 64.0
+margin/right = 1647.0
 margin/bottom = 90.0
 custom_fonts/font = ExtResource( 10 )
 text = "Motion 2:"
