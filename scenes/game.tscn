@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=1]
+[gd_scene load_steps=16 format=1]
 
 [ext_resource path="res://scenes/game.gd" type="Script" id=1]
 [ext_resource path="res://world/world_generator.tscn" type="PackedScene" id=2]
@@ -9,28 +9,29 @@
 [ext_resource path="res://pause.gd" type="Script" id=7]
 [ext_resource path="res://pause/pause.tex" type="Texture" id=8]
 [ext_resource path="res://shaders/white.tex" type="Texture" id=9]
+[ext_resource path="res://fonts/source-sans-pro.fnt" type="BitmapFont" id=10]
 
-[sub_resource type="CanvasItemShader" id=6]
+[sub_resource type="CanvasItemShader" id=1]
 
 _code = { "fragment":"COLOR.rgb = vec3(dot(COLOR.rgb, vec3(0.299, 0.587, 0.114)));", "fragment_ofs":0, "light":"", "light_ofs":0, "vertex":"", "vertex_ofs":0 }
 
-[sub_resource type="CanvasItemMaterial" id=7]
+[sub_resource type="CanvasItemMaterial" id=2]
 
-shader/shader = SubResource( 6 )
+shader/shader = SubResource( 1 )
 shader/shading_mode = 0
 
-[sub_resource type="RectangleShape2D" id=5]
+[sub_resource type="RectangleShape2D" id=3]
 
 custom_solver_bias = 0.0
 extents = Vector2( 32, 547 )
 
-[sub_resource type="CanvasItemShader" id=8]
+[sub_resource type="CanvasItemShader" id=4]
 
 _code = { "fragment":"uniform color base=color(0.75,0.6,0.6,1.0);\nuniform float frequency=60;\nuniform float depth = 0.005;\n\nvec2 uv = SCREEN_UV;\nuv.x += sin(uv.y*frequency+TIME)*depth;\nuv.x = clamp(uv.x,0,1);\n\nvec3 c = texscreen(uv);\n\nfloat v = dot(c,vec3(0.33333,0.33333,0.33333));\nv=sqrt(v);\n\nCOLOR.rgb= base.rgb*v;\n", "fragment_ofs":0, "light":"", "light_ofs":0, "vertex":"", "vertex_ofs":0 }
 
-[sub_resource type="CanvasItemMaterial" id=9]
+[sub_resource type="CanvasItemMaterial" id=5]
 
-shader/shader = SubResource( 8 )
+shader/shader = SubResource( 4 )
 shader/shading_mode = 0
 shader_param/base = Color( 0.804688, 0.765887, 0.556366, 1 )
 shader_param/frequency = 50.0
@@ -39,11 +40,12 @@ shader_param/depth = 0.003
 [node name="game" type="Node"]
 
 script/script = ExtResource( 1 )
-disable_scroll = false
+disable_scroll = true
 
 [node name="world" type="Node2D" parent="."]
 
-material/material = SubResource( 7 )
+editor/display_folded = true
+material/material = SubResource( 2 )
 
 [node name="world_generator" parent="world" instance=ExtResource( 2 )]
 
@@ -117,6 +119,7 @@ transform/pos = Vector2( 1024, 544 )
 
 [node name="camera" type="Camera2D" parent="."]
 
+editor/display_folded = true
 anchor_mode = 0
 rotating = false
 current = true
@@ -138,7 +141,7 @@ drag_margin/bottom = 0.2
 
 transform/pos = Vector2( 1920, 0 )
 input/pickable = false
-shapes/0/shape = SubResource( 5 )
+shapes/0/shape = SubResource( 3 )
 shapes/0/transform = Matrix32( 1, 0, 0, 1, 32, 547 )
 shapes/0/trigger = false
 collision/layers = 1
@@ -151,12 +154,13 @@ bounce = 0.0
 [node name="collision" type="CollisionShape2D" parent="camera/world_border"]
 
 transform/pos = Vector2( 32, 547 )
-shape = SubResource( 5 )
+shape = SubResource( 3 )
 trigger = false
 _update_shape_index = 0
 
 [node name="ParallaxBackground" type="ParallaxBackground" parent="."]
 
+editor/display_folded = true
 layer = -1
 offset = Vector2( 960, 0 )
 rotation = 0.0
@@ -182,6 +186,7 @@ texture = ExtResource( 4 )
 [node name="end" type="CanvasLayer" parent="."]
 
 process/pause_mode = 2
+editor/display_folded = true
 layer = 1
 offset = Vector2( 0, 0 )
 rotation = 0.0
@@ -223,6 +228,7 @@ max_lines_visible = -1
 [node name="pause" type="CanvasLayer" parent="."]
 
 process/pause_mode = 2
+editor/display_folded = true
 layer = 1
 offset = Vector2( 0, 0 )
 rotation = 0.0
@@ -264,7 +270,7 @@ stretch_mode = 0
 
 [node name="pauseeffect" type="TextureFrame" parent="pause/pause_overlay"]
 
-material/material = SubResource( 9 )
+material/material = SubResource( 5 )
 anchor/right = 1
 anchor/bottom = 1
 focus/ignore_mouse = true
@@ -278,5 +284,131 @@ margin/bottom = 0.0
 texture = ExtResource( 9 )
 expand = true
 stretch_mode = 0
+
+[node name="debug_output" type="CanvasLayer" parent="."]
+
+layer = 1
+offset = Vector2( 0, 0 )
+rotation = 0.0
+scale = Vector2( 1, 1 )
+
+[node name="motion1" type="Label" parent="debug_output"]
+
+rect/scale = Vector2( 1.4, 1.4 )
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 32.0
+margin/top = 32.0
+margin/right = 137.0
+margin/bottom = 58.0
+custom_fonts/font = ExtResource( 10 )
+text = "Motion 1:"
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="motion2" type="Label" parent="debug_output"]
+
+rect/scale = Vector2( 1.4, 1.4 )
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 32.0
+margin/top = 96.0
+margin/right = 137.0
+margin/bottom = 122.0
+custom_fonts/font = ExtResource( 10 )
+text = "Motion Rest:"
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="motion3" type="Label" parent="debug_output"]
+
+rect/scale = Vector2( 1.4, 1.4 )
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 32.0
+margin/top = 128.0
+margin/right = 143.0
+margin/bottom = 154.0
+custom_fonts/font = ExtResource( 10 )
+text = "Motion 2:"
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="motion4" type="Label" parent="debug_output"]
+
+rect/scale = Vector2( 1.4, 1.4 )
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 32.0
+margin/top = 160.0
+margin/right = 143.0
+margin/bottom = 186.0
+custom_fonts/font = ExtResource( 10 )
+text = "Motion 2:"
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="motion6" type="Label" parent="debug_output"]
+
+rect/scale = Vector2( 1.4, 1.4 )
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 32.0
+margin/top = 192.0
+margin/right = 143.0
+margin/bottom = 218.0
+custom_fonts/font = ExtResource( 10 )
+text = "Motion 2:"
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="motion7" type="Label" parent="debug_output"]
+
+rect/scale = Vector2( 1.4, 1.4 )
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 32.0
+margin/top = 224.0
+margin/right = 143.0
+margin/bottom = 250.0
+custom_fonts/font = ExtResource( 10 )
+text = "Motion 2:"
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="motion5" type="Label" parent="debug_output"]
+
+rect/scale = Vector2( 1.4, 1.4 )
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 32.0
+margin/top = 64.0
+margin/right = 143.0
+margin/bottom = 90.0
+custom_fonts/font = ExtResource( 10 )
+text = "Motion 2:"
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
 
 
