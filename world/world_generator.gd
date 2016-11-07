@@ -1,5 +1,7 @@
 extends Node2D
 
+export(int) var start_x = 0
+
 # The pixel value of how far before the end of the world would scroll into view
 # a new snippet is loaded.
 const PRELOAD_HORIZON = 500
@@ -16,7 +18,7 @@ var last_snippet_width
 
 onready var camera = utils.get_camera()
 
-var world_end = Vector2()
+var world_end
 
 func _init():
 	for scene in utils.get_scenes_in_directory("res://world/snippets"):
@@ -25,6 +27,7 @@ func _init():
 	snippet_count = snippets.size()
 
 func _ready():
+	world_end = Vector2(start_x, 0)
 	set_process(true)
 
 func _process(delta):

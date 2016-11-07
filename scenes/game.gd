@@ -1,5 +1,6 @@
 extends Node
 
+const SCROLL_START_DELAY = 1.8
 const INITIAL_SCROLL_SPEED = 150.0
 const SCROLL_ACCELERATION = 15.0
 const MAX_SCROLL_SPEED = 450.0
@@ -18,6 +19,7 @@ var camera_pos = Vector2()
 var players_alive
 var players_count
 var scroll_speed = INITIAL_SCROLL_SPEED
+var scroll_start = SCROLL_START_DELAY
 
 func _ready():
 	# Called every time the node is added to the scene.
@@ -41,11 +43,19 @@ func setup_players():
 	var ps = players.get_players()
 	players_count = ps.size()
 	players_alive = players_count
+	var starting_points = get_node("world/starting_point/starting_positions")
+	
 	for joined_player in ps:
 		var p = player.instance()
 		p.player_number = joined_player.number
 		p.player_color = joined_player.color
-		p.set_pos(Vector2(500 + 100*joined_player.number, 200))
+		
+		# Get a random start position for this player
+		randomize()
+		var pos_index = randi() % starting_points.get_child_count()
+		var starting_pos = starting_points.get_child(pos_index)
+		p.set_pos(Vector2(starting_pos.get_pos().x, starting_pos.get_pos().y))
+		starting_pos.queue_free()
 		p.connect("died", self, "player_died")
 		hud.add_player(p)
 		player_container.add_child(p)
@@ -62,6 +72,9 @@ func end_game():
 
 func _fixed_process(delta):
 	if not disable_scroll:
-		scroll_speed = min(scroll_speed + delta * SCROLL_ACCELERATION, MAX_SCROLL_SPEED)
-		camera_pos.x += delta * scroll_speed
-		camera.set_pos(camera_pos)
+		if scroll_start > 0:
+			scroll_start -= delta
+		else:
+			scroll_speed = min(scroll_speed + delta * SCROLL_ACCELERATION, MAX_SCROLL_SPEED)
+			camera_pos.x += delta * scroll_speed
+			camera.set_pos(camera_pos)
