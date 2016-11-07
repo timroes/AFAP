@@ -33,7 +33,7 @@ const X_DECELERATION_GROUND = 100000
 const X_DECELERATION_AIR = 100
 
 # The initial vector 
-const WALLJUMP_START_VECTOR = Vector2(200, -700)
+const WALLJUMP_START_VECTOR = Vector2(200, -800)
 # The amount of seconds after a walljump that horizontal movement control should be frozen
 const WALLJUMP_X_FREEZE_TIME = 0.15
 
