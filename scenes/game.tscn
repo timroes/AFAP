@@ -1,16 +1,15 @@
-[gd_scene load_steps=17 format=1]
+[gd_scene load_steps=16 format=1]
 
 [ext_resource path="res://scenes/game.gd" type="Script" id=1]
 [ext_resource path="res://world/world_generator.tscn" type="PackedScene" id=2]
-[ext_resource path="res://world/objects/box.tscn" type="PackedScene" id=3]
-[ext_resource path="res://hud/hud.gd" type="Script" id=4]
-[ext_resource path="res://hud/player_hud.tscn" type="PackedScene" id=5]
-[ext_resource path="res://world/mf_bg-1080p.tex" type="Texture" id=6]
-[ext_resource path="res://ending.gd" type="Script" id=7]
-[ext_resource path="res://fonts/minecrafter.fnt" type="BitmapFont" id=8]
-[ext_resource path="res://pause.gd" type="Script" id=9]
-[ext_resource path="res://pause/pause.tex" type="Texture" id=10]
-[ext_resource path="res://shaders/white.tex" type="Texture" id=11]
+[ext_resource path="res://hud/hud.gd" type="Script" id=3]
+[ext_resource path="res://hud/player_hud.tscn" type="PackedScene" id=4]
+[ext_resource path="res://world/mf_bg-1080p.tex" type="Texture" id=5]
+[ext_resource path="res://ending.gd" type="Script" id=6]
+[ext_resource path="res://fonts/minecrafter.fnt" type="BitmapFont" id=7]
+[ext_resource path="res://pause.gd" type="Script" id=8]
+[ext_resource path="res://pause/pause.tex" type="Texture" id=9]
+[ext_resource path="res://shaders/white.tex" type="Texture" id=10]
 
 [sub_resource type="CanvasItemShader" id=1]
 
@@ -45,78 +44,9 @@ disable_scroll = false
 
 [node name="world" type="Node2D" parent="."]
 
-editor/display_folded = true
 material/material = SubResource( 2 )
 
 [node name="world_generator" parent="world" instance=ExtResource( 2 )]
-
-[node name="demo_world" type="Node2D" parent="world"]
-
-editor/display_folded = true
-
-[node name="box" parent="world/demo_world" instance=ExtResource( 3 )]
-
-transform/pos = Vector2( 512, 1024 )
-
-[node name="box1" parent="world/demo_world" instance=ExtResource( 3 )]
-
-transform/pos = Vector2( 512, 896 )
-
-[node name="box2" parent="world/demo_world" instance=ExtResource( 3 )]
-
-transform/pos = Vector2( 640, 1024 )
-
-[node name="box3" parent="world/demo_world" instance=ExtResource( 3 )]
-
-transform/pos = Vector2( 512, 768 )
-
-[node name="box4" parent="world/demo_world" instance=ExtResource( 3 )]
-
-transform/pos = Vector2( 512, 640 )
-
-[node name="box5" parent="world/demo_world" instance=ExtResource( 3 )]
-
-transform/pos = Vector2( 1248, 1024 )
-
-[node name="box6" parent="world/demo_world" instance=ExtResource( 3 )]
-
-transform/pos = Vector2( 1376, 896 )
-
-[node name="box7" parent="world/demo_world" instance=ExtResource( 3 )]
-
-transform/pos = Vector2( 1216, 640 )
-
-[node name="box8" parent="world/demo_world" instance=ExtResource( 3 )]
-
-transform/pos = Vector2( 1504, 768 )
-
-[node name="box13" parent="world/demo_world" instance=ExtResource( 3 )]
-
-transform/pos = Vector2( 1632, 960 )
-
-[node name="box14" parent="world/demo_world" instance=ExtResource( 3 )]
-
-transform/pos = Vector2( 1664, 1024 )
-
-[node name="box15" parent="world/demo_world" instance=ExtResource( 3 )]
-
-transform/pos = Vector2( 1856, 800 )
-
-[node name="box9" parent="world/demo_world" instance=ExtResource( 3 )]
-
-transform/pos = Vector2( 384, 768 )
-
-[node name="box10" parent="world/demo_world" instance=ExtResource( 3 )]
-
-transform/pos = Vector2( 384, 896 )
-
-[node name="box11" parent="world/demo_world" instance=ExtResource( 3 )]
-
-transform/pos = Vector2( 256, 1024 )
-
-[node name="box12" parent="world/demo_world" instance=ExtResource( 3 )]
-
-transform/pos = Vector2( 1024, 544 )
 
 [node name="players" type="Node2D" parent="."]
 
@@ -171,9 +101,9 @@ margin/left = 0.0
 margin/top = -22.0
 margin/right = 40.0
 margin/bottom = 18.0
-script/script = ExtResource( 4 )
+script/script = ExtResource( 3 )
 
-[node name="player0_hud" parent="camera/hud" instance=ExtResource( 5 )]
+[node name="player0_hud" parent="camera/hud" instance=ExtResource( 4 )]
 
 visibility/visible = false
 margin/left = 32.0
@@ -181,7 +111,7 @@ margin/top = 32.0
 margin/right = 72.0
 margin/bottom = 72.0
 
-[node name="player1_hud" parent="camera/hud" instance=ExtResource( 5 )]
+[node name="player1_hud" parent="camera/hud" instance=ExtResource( 4 )]
 
 visibility/visible = false
 margin/left = 256.0
@@ -189,7 +119,7 @@ margin/top = 32.0
 margin/right = 296.0
 margin/bottom = 72.0
 
-[node name="player2_hud" parent="camera/hud" instance=ExtResource( 5 )]
+[node name="player2_hud" parent="camera/hud" instance=ExtResource( 4 )]
 
 visibility/visible = false
 margin/left = 480.0
@@ -197,7 +127,7 @@ margin/top = 32.0
 margin/right = 520.0
 margin/bottom = 72.0
 
-[node name="player3_hud" parent="camera/hud" instance=ExtResource( 5 )]
+[node name="player3_hud" parent="camera/hud" instance=ExtResource( 4 )]
 
 visibility/visible = false
 margin/left = 704.0
@@ -205,7 +135,7 @@ margin/top = 32.0
 margin/right = 744.0
 margin/bottom = 72.0
 
-[node name="player4_hud" parent="camera/hud" instance=ExtResource( 5 )]
+[node name="player4_hud" parent="camera/hud" instance=ExtResource( 4 )]
 
 visibility/visible = false
 margin/left = 928.0
@@ -236,7 +166,7 @@ motion/mirroring = Vector2( 1920, 0 )
 
 [node name="Sprite" type="Sprite" parent="ParallaxBackground/ParallaxLayer"]
 
-texture = ExtResource( 6 )
+texture = ExtResource( 5 )
 
 [node name="end" type="CanvasLayer" parent="."]
 
@@ -246,7 +176,7 @@ layer = 1
 offset = Vector2( 0, 0 )
 rotation = 0.0
 scale = Vector2( 1, 1 )
-script/script = ExtResource( 7 )
+script/script = ExtResource( 6 )
 
 [node name="end_overlay" type="Control" parent="end"]
 
@@ -272,7 +202,7 @@ margin/left = 800.0
 margin/top = 512.0
 margin/right = 1123.0
 margin/bottom = 596.0
-custom_fonts/font = ExtResource( 8 )
+custom_fonts/font = ExtResource( 7 )
 custom_colors/font_color = Color( 0.336864, 0.145767, 0.910156, 1 )
 text = "THE END\n\nPress Start to play again"
 align = 1
@@ -287,7 +217,7 @@ layer = 1
 offset = Vector2( 0, 0 )
 rotation = 0.0
 scale = Vector2( 1, 1 )
-script/script = ExtResource( 9 )
+script/script = ExtResource( 8 )
 pause_on_unfocus = false
 
 [node name="pause_overlay" type="Control" parent="pause"]
@@ -318,7 +248,7 @@ margin/left = 128.0
 margin/top = 128.0
 margin/right = 0.0
 margin/bottom = 0.0
-texture = ExtResource( 10 )
+texture = ExtResource( 9 )
 stretch_mode = 0
 
 [node name="pauseeffect" type="TextureFrame" parent="pause/pause_overlay"]
@@ -334,7 +264,7 @@ margin/left = 0.0
 margin/top = 0.0
 margin/right = 0.0
 margin/bottom = 0.0
-texture = ExtResource( 11 )
+texture = ExtResource( 10 )
 expand = true
 stretch_mode = 0
 
