@@ -119,9 +119,12 @@ func gravity_changed():
 func die():
 	# Disable input of this character, since it's dead now
 	set_fixed_process(false)
+	set_process_input(false)
+	set_process(false)
 	# TODO: die animation
 	emit_signal("died", player_number)
 	hide()
+	queue_free()
 	
 func pickup_item():
 	# If the player already holds an item, don't pick up another one
