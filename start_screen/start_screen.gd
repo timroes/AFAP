@@ -44,7 +44,7 @@ func has_joined_game(player_number):
 	
 func _input(event):
 	for player_number in range(MAX_PLAYERS):
-		if event.is_action_pressed("player%d_jump" % player_number):
+		if event.is_action_pressed("player%d_jump" % player_number) and !has_joined_game(player_number):
 			join_game(player_number)
 		elif event.is_action_pressed("player%d_right" % player_number) and !has_joined_game(player_number):
 			change_color(player_number, 1)
