@@ -4,12 +4,12 @@ signal died(player_number)
 signal picked_up_item(item)
 signal used_item()
 
-const GRAVITY = 1450.0
+const GRAVITY = 1850.0
 
 # The gravity with which a player slides down a wall
 const WALL_SLIDE_GRAVITY = GRAVITY / 10
 
-const JUMPING_START_VELOCITY = 750.0
+const JUMPING_START_VELOCITY = 880.0
 
 # The maximum velocity a player can have while being in free fall
 const MAX_FALLING_VELOCITY = 12000
@@ -22,7 +22,7 @@ const MAX_VELOCITY_X = 500
 const X_ACCELERATION = 2500
 # The x-axis acceleration a player has in the air (usually slower, so
 # that changing directions midair is slower, than on ground)
-const X_ACCELERATION_AIR = X_ACCELERATION / 2
+const X_ACCELERATION_AIR = X_ACCELERATION / 1
 
 # The x-axis deceleration a player has on the ground, to prevent instant stopping
 # if the player doesn't press right or left anymore
