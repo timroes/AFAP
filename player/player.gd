@@ -260,3 +260,5 @@ func headjump(other_player):
 	# Freeze other players wallslide for some time, so when he was wallsliding while being headjumped
 	# he will fall for some time before able to slide again
 	other_player.wallslide_frozen = HEADJUMPED_WALLSLIDE_FREEZE_TIME
+	if other_player.controller_id != null:
+		vibrator.player_headjumped(other_player.controller_id)
