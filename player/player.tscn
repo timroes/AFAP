@@ -12,19 +12,19 @@ extents = Vector2( 32, 26.0049 )
 [sub_resource type="Animation" id=2]
 
 resource/name = "item_pickup"
-length = 1.5
+length = 1.1
 loop = false
 step = 0.1
 tracks/0/type = "value"
 tracks/0/path = NodePath("item_name:rect/pos")
 tracks/0/interp = 2
 tracks/0/imported = false
-tracks/0/keys = { "times":FloatArray( 0, 1, 1.5 ), "transitions":FloatArray( 1, 1, 1 ), "update":0, "values":[ Vector2( -100, -33 ), Vector2( -100, -70 ), Vector2( -100, -75 ) ] }
+tracks/0/keys = { "times":FloatArray( 0, 0.7, 1.1 ), "transitions":FloatArray( 1, 1, 1 ), "update":0, "values":[ Vector2( -100, -33 ), Vector2( -100, -70 ), Vector2( -100, -75 ) ] }
 tracks/1/type = "value"
 tracks/1/path = NodePath("item_name:visibility/opacity")
 tracks/1/interp = 2
 tracks/1/imported = false
-tracks/1/keys = { "times":FloatArray( 0, 0.5, 1, 1.5 ), "transitions":FloatArray( 1, 1, 1, 1 ), "update":0, "values":[ 0.0, 1.0, 1.0, 0.0 ] }
+tracks/1/keys = { "times":FloatArray( 0, 0.3, 0.7, 1.1 ), "transitions":FloatArray( 1, 1, 1, 1 ), "update":0, "values":[ 0.0, 1.0, 1.0, 0.0 ] }
 
 [node name="player" type="KinematicBody2D" groups=[ "player" ]]
 
