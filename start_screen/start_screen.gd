@@ -16,6 +16,7 @@ const PLAYER_COLORS = [
 
 var color_index = {}
 var joined_game = {}
+var color_select_action_pressed = {}
 
 func _ready():
 	set_process_input(true)
@@ -46,10 +47,17 @@ func _input(event):
 	for player_number in range(MAX_PLAYERS):
 		if event.is_action_pressed("player%d_jump" % player_number) and !has_joined_game(player_number):
 			join_game(player_number)
-		elif event.is_action_pressed("player%d_right" % player_number) and !has_joined_game(player_number):
-			change_color(player_number, 1)
-		elif event.is_action_pressed("player%d_left" % player_number) and !has_joined_game(player_number):
-			change_color(player_number, -1)
+		
+		if color_select_action_pressed.has(str(player_number)) and color_select_action_pressed[str(player_number)]:
+			if event.is_action_released("player%d_right" % player_number) or event.is_action_released("player%d_left" % player_number):
+				color_select_action_pressed[str(player_number)] = false
+		else:
+			if event.is_action_pressed("player%d_right" % player_number) and !has_joined_game(player_number):
+				change_color(player_number, 1)
+				color_select_action_pressed[str(player_number)] = true
+			elif event.is_action_pressed("player%d_left" % player_number) and !has_joined_game(player_number):
+				change_color(player_number, -1)
+				color_select_action_pressed[str(player_number)] = true
 	
 	if players.get_players().size() > 0 and event.is_action_pressed("start_game"):
 		get_tree().change_scene("res://scenes/game.tscn")
