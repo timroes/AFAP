@@ -32,7 +32,10 @@ func get_player_color(player_number):
 	return PLAYER_COLORS[color_index[player_number]]
 	
 func join_game(player_number):
-	players.add_player(player_number, get_player_color(player_number))
+	if player_number > 0:
+		players.add_player(player_number, get_player_color(player_number), player_number - 1)
+	else:
+		players.add_player(player_number, get_player_color(player_number))
 	get_node("players/player%d" % player_number).set_opacity(0.4)
 	joined_game[player_number] = true
 

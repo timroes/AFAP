@@ -71,6 +71,8 @@ var wall_slide_side
 var x_movement_frozen = -1
 var wallslide_frozen = -1
 
+var controller_id
+
 var action_jump
 var action_left
 var action_right
@@ -121,6 +123,8 @@ func die():
 	set_fixed_process(false)
 	set_process_input(false)
 	set_process(false)
+	if controller_id != null:
+		vibrator.player_death(controller_id)
 	# TODO: die animation
 	emit_signal("died", player_number)
 	hide()

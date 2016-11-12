@@ -49,6 +49,7 @@ func setup_players():
 		var p = player.instance()
 		p.player_number = joined_player.number
 		p.player_color = joined_player.color
+		p.controller_id = joined_player.controller
 		
 		# Get a random start position for this player
 		randomize()
