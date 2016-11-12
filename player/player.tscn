@@ -1,12 +1,30 @@
-[gd_scene load_steps=4 format=1]
+[gd_scene load_steps=6 format=1]
 
 [ext_resource path="res://player/player.gd" type="Script" id=1]
 [ext_resource path="res://player/player.tex" type="Texture" id=2]
+[ext_resource path="res://fonts/jellee.fnt" type="BitmapFont" id=3]
 
 [sub_resource type="RectangleShape2D" id=1]
 
 custom_solver_bias = 0.0
 extents = Vector2( 32, 26.0049 )
+
+[sub_resource type="Animation" id=2]
+
+resource/name = "item_pickup"
+length = 1.5
+loop = false
+step = 0.1
+tracks/0/type = "value"
+tracks/0/path = NodePath("item_name:rect/pos")
+tracks/0/interp = 2
+tracks/0/imported = false
+tracks/0/keys = { "times":FloatArray( 0, 1, 1.5 ), "transitions":FloatArray( 1, 1, 1 ), "update":0, "values":[ Vector2( -100, -33 ), Vector2( -100, -70 ), Vector2( -100, -75 ) ] }
+tracks/1/type = "value"
+tracks/1/path = NodePath("item_name:visibility/opacity")
+tracks/1/interp = 2
+tracks/1/imported = false
+tracks/1/keys = { "times":FloatArray( 0, 0.5, 1, 1.5 ), "transitions":FloatArray( 1, 1, 1, 1 ), "update":0, "values":[ 0.0, 1.0, 1.0, 0.0 ] }
 
 [node name="player" type="KinematicBody2D" groups=[ "player" ]]
 
@@ -34,5 +52,37 @@ _update_shape_index = 0
 [node name="point_of_death" type="Position2D" parent="."]
 
 transform/pos = Vector2( 16, 0 )
+
+[node name="animation_player" type="AnimationPlayer" parent="."]
+
+playback/process_mode = 1
+playback/default_blend_time = 0.0
+root/root = NodePath("..")
+anims/item_pickup = SubResource( 2 )
+playback/active = true
+playback/speed = 1.0
+blend_times = [  ]
+autoplay = ""
+
+[node name="item_name" type="Label" parent="."]
+
+visibility/opacity = 0.0
+anchor/right = 1
+rect/min_size = Vector2( 200, 0 )
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = -100.0
+margin/top = -75.0
+margin/right = -36.0
+margin/bottom = -54.0
+custom_fonts/font = ExtResource( 3 )
+align = 1
+autowrap = true
+clip_text = true
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
 
 

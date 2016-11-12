@@ -61,6 +61,8 @@ export(Color) var player_color = Color(1, 1, 1) setget set_player_color
 onready var camera = utils.get_camera()
 onready var point_of_death = get_node("point_of_death")
 onready var sprite = get_node("sprite")
+onready var item_name = get_node("item_name")
+onready var animations = get_node("animation_player")
 
 var gravity_direction = 1
 var velocity = Vector2()
@@ -137,6 +139,10 @@ func pickup_item():
 
 	# Get a random item and send out pick up event
 	current_item = items.get_random_item()
+	# Show item name with animation above player
+	item_name.set_text(current_item.name)
+	animations.play("item_pickup")
+	# emit the picked_up_item event
 	emit_signal("picked_up_item", current_item)
 	return true
 	
