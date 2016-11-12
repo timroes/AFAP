@@ -55,7 +55,7 @@ func setup_players():
 		var pos_index = randi() % starting_points.get_child_count()
 		var starting_pos = starting_points.get_child(pos_index)
 		p.set_pos(Vector2(starting_pos.get_pos().x, starting_pos.get_pos().y))
-		starting_pos.queue_free()
+		starting_pos.free()
 		p.connect("died", self, "player_died")
 		hud.add_player(p)
 		player_container.add_child(p)
