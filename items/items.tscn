@@ -1,16 +1,23 @@
-[gd_scene load_steps=5 format=1]
+[gd_scene load_steps=6 format=1]
 
 [ext_resource path="res://items/items.gd" type="Script" id=1]
-[ext_resource path="res://shaders/white.tex" type="Texture" id=2]
+[ext_resource path="res://shaders/filmgrain.tex" type="Texture" id=2]
+[ext_resource path="res://shaders/white.tex" type="Texture" id=3]
 
 [sub_resource type="CanvasItemShader" id=1]
 
-_code = { "fragment":"COLOR.rgb = vec3(dot(texscreen(SCREEN_UV), vec3(0.299, 0.587, 0.114)));", "fragment_ofs":0, "light":"", "light_ofs":0, "vertex":"", "vertex_ofs":0 }
+_code = { "fragment":"uniform color base=color(0.75,0.6,0.6,1.0);\nuniform texture grain;\nuniform float grain_strength=0.3;\nuniform float fps=12;\nuniform float stretch = 0.5;\nuniform float flashing=0.01;\n\nvec3 c = texscreen(SCREEN_UV);\n\nfloat v = dot(c,vec3(0.33333,0.33333,0.33333));\nv=sqrt(v);\nfloat make_grain(float time) {\n\tvec2 ofs = vec2(sin(41*time*sin(time*123)),sin(27*time*sin(time*312)));\n\treturn tex(grain,(UV+mod(ofs,vec2(1,1)))*stretch).r;\n}\n\nfloat f = 1.0/fps;\nfloat g = make_grain(TIME-mod(TIME,f));\ng=max(g,make_grain(TIME-mod(TIME,f)+f)*0.5);\ng=max(g,make_grain(TIME-mod(TIME,f)+f*2.0)*0.25);\n\n\nCOLOR.rgb= base.rgb*v-vec3(g)*grain_strength;\nfloat ft = TIME * 0.002;\nCOLOR.rgb+=vec3(sin(75*ft*sin(ft*123)))*flashing;\n", "fragment_ofs":0, "light":"", "light_ofs":0, "vertex":"", "vertex_ofs":0 }
 
 [sub_resource type="CanvasItemMaterial" id=2]
 
 shader/shader = SubResource( 1 )
 shader/shading_mode = 0
+shader_param/base = Color( 0.777344, 0.70499, 0.592117, 1 )
+shader_param/grain = ExtResource( 2 )
+shader_param/grain_strength = 0.3
+shader_param/fps = 12.0
+shader_param/stretch = 0.5
+shader_param/flashing = 0.01
 
 [node name="items" type="CanvasLayer"]
 
@@ -36,7 +43,7 @@ margin/left = 0.0
 margin/top = 0.0
 margin/right = 0.0
 margin/bottom = 0.0
-texture = ExtResource( 2 )
+texture = ExtResource( 3 )
 expand = true
 stretch_mode = 0
 
