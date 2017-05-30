@@ -262,7 +262,8 @@ func headjump(other_player):
 	# player y velocity.
 	# Stop other players x velocity when jumping onto his head and give him some downwards velocity
 	# (as long as he's not already moving downwards faster)
-	other_player.velocity = Vector2(0, gravity_direction * max(abs(other_player.velocity.y), HEADJUMPED_PUSH_DOWN_VELOCITY))
+	# TODO: Use constant!
+	other_player.velocity = Vector2(min(other_player.velocity.x, 80), gravity_direction * max(abs(other_player.velocity.y), HEADJUMPED_PUSH_DOWN_VELOCITY))
 	# Freeze other players wallslide for some time, so when he was wallsliding while being headjumped
 	# he will fall for some time before able to slide again
 	other_player.wallslide_frozen = HEADJUMPED_WALLSLIDE_FREEZE_TIME
